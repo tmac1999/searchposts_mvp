@@ -1,0 +1,31 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 18
+    buildToolsVersion "23.0.2"
+
+    defaultConfig {
+        applicationId "com.mrz.searchposts"
+        minSdkVersion 8
+        targetSdkVersion 18
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+        }
+    }
+}
+
+dependencies {
+    compile files('libs/jsoup-1.8.3.jar')
+    compile project(':slidingmenu')
+    compile files('D:/projects/searchposts/library/libs/avoscloud-v2.6.9.1.jar')
+    compile files('D:/projects/searchposts/library/libs/avospush-v2.6.9.1.jar')
+    compile files('D:/projects/searchposts/library/libs/avossearch-v2.6.9.1.jar')
+    compile files('D:/projects/searchposts/library/libs/avosstatistics-v2.6.9.1.jar')
+    compile files('D:/projects/searchposts/library/libs/httpmime-4.2.4.jar')
+    compile files('D:/projects/searchposts/library/libs/fastjson.jar')
+    compile files('D:/projects/searchposts/library/libs/android-async-http-1.4.6.jar')
+}

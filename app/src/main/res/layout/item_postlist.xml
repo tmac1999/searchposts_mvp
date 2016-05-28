@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal" >
+    <TextView
+        android:id="@+id/tv_url"
+        android:layout_marginLeft="10dp"
+        android:text="今天真是日了小鹏鹏"
+        android:singleLine="true"
+        android:visibility="gone"
+        android:layout_width="@dimen/title"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_marginLeft="10dp"
+        android:text="今天真是日了小鹏鹏"
+        android:singleLine="true"
+        android:layout_width="@dimen/title"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/tv_author"
+        android:layout_marginLeft="10dp"
+        android:text="作者"
+        android:singleLine="true"
+        android:layout_width="@dimen/author"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/tv_posttime"
+        android:layout_marginLeft="10dp"
+        android:text="发布日期"
+        android:singleLine="true"
+        android:layout_width="@dimen/posttime"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/tv_replycount"
+        android:layout_marginLeft="10dp"
+        android:text="replycount"
+        android:singleLine="true"
+        android:layout_width="@dimen/replycount"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>

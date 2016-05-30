@@ -1,7 +1,7 @@
 <component name="libraryTable">
   <library name="android-android-17">
     <CLASSES>
-      <root url="jar://D:/Users/mrz/AppData/Local/Android/Sdk/platforms/android-17/android.jar!/" />
+      <root url="jar://D:/AppData/Local/Android/sdk/platforms/android-17/android.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

@@ -69,4 +69,24 @@
             android:text="登录"
             android:textSize="20sp" />
     </LinearLayout>
+    <LinearLayout
+        android:id="@+id/ll_feedback"
+        android:layout_width="260dp"
+        android:background="#77DDCC66"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:orientation="horizontal" >
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/about_selector" />
+
+        <TextView
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="登录"
+            android:textSize="20sp" />
+    </LinearLayout>
 </LinearLayout>

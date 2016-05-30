@@ -1,8 +1,5 @@
 package com.mrz.searchposts.component.main;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
@@ -34,15 +31,20 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.jeremyfeinstein.slidingmenu.lib.app.SlidingFragmentActivity;
 import com.mrz.searchposts.PostListActivity;
 import com.mrz.searchposts.R;
+import com.mrz.searchposts.component.feedback.FeedBackActivity;
 import com.mrz.searchposts.component.login.LoginActivity;
 import com.mrz.searchposts.data.db.DBHelper;
 import com.mrz.searchposts.engine.SearchEngine;
 import com.mrz.searchposts.utils.CommonUtils;
 import com.mrz.searchposts.utils.TimeUtils;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * version1.0 1.点击显示帖子 进入帖子详情，退回返回帖子列表（新activity） 2.数据库增加贴吧字段or 一个贴吧一张表？ 作者 发帖日期
@@ -135,7 +137,8 @@ public class MainActivity extends SlidingFragmentActivity implements
 		LinearLayout ll_jumptolist = (LinearLayout) findViewById(R.id.ll_jumptolist);
 		LinearLayout ll_about = (LinearLayout) findViewById(R.id.ll_about);
         LinearLayout ll_login = (LinearLayout) findViewById(R.id.ll_login);
-		ll_jumptolist.setOnClickListener(new OnClickListener() {
+        LinearLayout ll_feedback = (LinearLayout)findViewById(R.id.ll_feedback);
+        ll_jumptolist.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
@@ -155,6 +158,13 @@ public class MainActivity extends SlidingFragmentActivity implements
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this, LoginActivity.class));
+            }
+        });
+        ll_feedback.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, FeedBackActivity.class));
             }
         });
 	}
@@ -187,7 +197,7 @@ public class MainActivity extends SlidingFragmentActivity implements
 		case R.id.btn_confirm:
 			tiebaName = et_tiebaname.getText().toString();
 			if (TextUtils.isEmpty(tiebaName)) {
-				Toast.makeText(getApplicationContext(), "贴吧名字不能为空", 1).show();
+				Toast.makeText(getApplicationContext(), "贴吧名字不能为空", Toast.LENGTH_LONG).show();
 			} else {
 				encodeTiebaName = Uri.encode(tiebaName);
 				Log.i(TAG, encodeTiebaName);
@@ -210,7 +220,7 @@ public class MainActivity extends SlidingFragmentActivity implements
 						msg.what = SHOW_TOTALPAGECOUNT;
 						msg.obj = count;
 						handler.sendMessage(msg);
-					};
+					}
 				}.start();
 
 			}
@@ -219,7 +229,7 @@ public class MainActivity extends SlidingFragmentActivity implements
 		case R.id.btn_search:
 			if (TextUtils.isEmpty(searchURL)
 					|| TextUtils.isEmpty(encodeTiebaName)) {
-				Toast.makeText(getApplicationContext(), "贴吧名字不能为空或者还没进入贴吧", 1)
+				Toast.makeText(getApplicationContext(), "贴吧名字不能为空或者还没进入贴吧", Toast.LENGTH_LONG)
 						.show();
 			} else {// 都不为空
 				startSearchEngine(searchURL, encodeTiebaName, tiebaName);
@@ -230,7 +240,7 @@ public class MainActivity extends SlidingFragmentActivity implements
 	}
 
 	private void showProgressBar() {
-		Toast.makeText(getApplicationContext(), "开始创建数据库...", 1).show();
+		Toast.makeText(getApplicationContext(), "开始创建数据库...", Toast.LENGTH_LONG).show();
 		tv_progress.setVisibility(View.VISIBLE);
 		tv_progress.setText("页数" + count);
 	}
@@ -321,7 +331,7 @@ public class MainActivity extends SlidingFragmentActivity implements
 					@Override
 					public void onCancel(DialogInterface dialog) {
 						alertDialog.dismiss();
-						Toast.makeText(MainActivity.this, "OnCancelListener", 0)
+						Toast.makeText(MainActivity.this, "OnCancelListener", Toast.LENGTH_LONG)
 								.show();
 					}
 				});
@@ -331,7 +341,7 @@ public class MainActivity extends SlidingFragmentActivity implements
 					public void onDismiss(DialogInterface dialog) {
 						alertDialog.dismiss();
 						Toast.makeText(MainActivity.this, "OnDismissListener",
-								0).show();
+                                Toast.LENGTH_LONG).show();
 
 					}
 				});
@@ -465,7 +475,7 @@ public class MainActivity extends SlidingFragmentActivity implements
 				tv_progress.setText("贴吧一共有" + msg.obj + "页");
 				break;
 			case GET_POSTCOUNTERROR:
-				Toast.makeText(MainActivity.this, "查找贴吧页数出错", 1).show();
+				Toast.makeText(MainActivity.this, "查找贴吧页数出错", Toast.LENGTH_LONG).show();
 				break;
 			default:
 				progressPaperCount += (Integer) msg.obj;

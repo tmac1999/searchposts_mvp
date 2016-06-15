@@ -6,6 +6,7 @@ import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.SaveCallback;
 import com.mrz.searchposts.data.SPRepository;
 import com.mrz.searchposts.service.AVService;
+import com.mrz.searchposts.session.UserSession;
 
 /**
  * Created by zhengpeng on 2016/5/30.
@@ -38,9 +39,7 @@ public class FeedBackPresenter implements FeedBackContract.Presenter {
         String cpuAbi = Build.CPU_ABI;
         String board = Build.BOARD;
         String cpuAbi2 = Build.CPU_ABI2;
-        String manufacturer = Build.MANUFACTURER;
-        String serial = Build.SERIAL;
-        String guestID = serial+"##"+manufacturer;
+
         String devicename = "brand="+brand+";device="+device+";model="+model+";product="+product+";sdk="+sdk+";cpuAbi="+cpuAbi+";board="+board+";cpuAbi2="+cpuAbi2;
         SaveCallback saveCallback = new SaveCallback() {
             @Override
@@ -53,10 +52,8 @@ public class FeedBackPresenter implements FeedBackContract.Presenter {
                 }
             }
         };
-        String userID = getUserID();
-        if (userID==null){
-            userID = guestID;
-        }
+        String userID = UserSession.getUserID();
+
         AVService.createAdvice(userID, devicename,feedBackContent, saveCallback);
     }
 
@@ -65,7 +62,5 @@ public class FeedBackPresenter implements FeedBackContract.Presenter {
 
     }
 
-    public String getUserID() {
-        return null;
-    }
+
 }

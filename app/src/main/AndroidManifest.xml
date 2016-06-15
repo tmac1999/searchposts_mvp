@@ -4,12 +4,10 @@
           android:versionCode="1"
           android:versionName="1.0">
 
-
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-
 
     <application
         android:name=".utils.ConfigApplication"
@@ -32,7 +30,10 @@
         </activity>
         <activity android:name=".component.feedback.FeedBackActivity">
         </activity>
-
+        <activity android:name=".component.communicate.SendPost.SendPostActivity">
+        </activity>
+        <activity android:name=".component.communicate.SubjectList.SubjectListActivity">
+        </activity>
     </application>
 
 </manifest>

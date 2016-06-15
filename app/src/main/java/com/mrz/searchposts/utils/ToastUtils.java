@@ -7,8 +7,14 @@ import android.widget.Toast;
  */
 public class ToastUtils {
 
+    static Toast toast;
+    public static void showSingletonToast(String msg){
 
-    public static void showSingletonToast(){
+        if (toast==null){
+            toast = Toast.makeText(ConfigApplication.getInstance(),msg,Toast.LENGTH_SHORT);
+        }
+        toast.setText(msg);
+        toast.show();
 
     }
     public static void longToast(String msg){

@@ -1,6 +1,8 @@
 package com.mrz.searchposts;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -27,8 +29,9 @@ public class PostListActivity extends SlidingFragmentActivity {
 	private EditText et_searchbytitle;
 	private Cursor cursor;
 	private String editable;
+    private ListView lv_listbehind;
 
-	@Override
+    @Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		//setTitle(title)
@@ -113,7 +116,7 @@ public class PostListActivity extends SlidingFragmentActivity {
 		slidingMenu.setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
 		// 设置正文保留的宽度
 		slidingMenu.setBehindOffset(CommonUtils.dp2px(this, 200));
-		ListView lv_listbehind = (ListView) findViewById(R.id.lv_listbehind);
+        lv_listbehind = (ListView) findViewById(R.id.lv_listbehind);
 		Cursor allTieba = LinkDao.getAllTieba(PostListActivity.this);
 		lv_listbehind.setAdapter(new BehindListAdapter(PostListActivity.this,allTieba));
 		lv_listbehind.setOnItemClickListener(new OnItemClickListener() {
@@ -132,7 +135,43 @@ public class PostListActivity extends SlidingFragmentActivity {
 				}
 			}
 		});
+        lv_listbehind.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener()
+        {
+            public boolean onItemLongClick(AdapterView<?> paramAdapterView, View paramView, int paramInt, long paramLong)
+            {
+                TextView localTextView = (TextView)((ViewGroup)paramView).getChildAt(0);
+                if (localTextView != null)
+                {
+                    String str = localTextView.getText().toString();
+                    Log.i("PostListActivity", "tiebaName" + str);
+                    PostListActivity.this.showDeleteDialog(str);
+                }
+                return true;
+            }
+        });
 	}
+    private void showDeleteDialog(final String paramString)
+    {
+        AlertDialog.Builder localBuilder = new AlertDialog.Builder(this);
+        localBuilder.setTitle("确定将删除此贴吧数据");
+        localBuilder.setNegativeButton("取消", new DialogInterface.OnClickListener()
+        {
+            public void onClick(DialogInterface paramDialogInterface, int paramInt)
+            {
+                paramDialogInterface.dismiss();
+            }
+        });
+        localBuilder.setPositiveButton("确定", new DialogInterface.OnClickListener()
+        {
+            public void onClick(DialogInterface paramDialogInterface, int paramInt)
+            {
+                LinkDao.deleteTableByTiebaName(PostListActivity.this, paramString);
+                Cursor localCursor = LinkDao.getAllTieba(PostListActivity.this);
+                PostListActivity.this.lv_listbehind.setAdapter(new PostListActivity.BehindListAdapter( PostListActivity.this, localCursor));
+            }
+        });
+        localBuilder.create().show();
+    }
 	class BehindListAdapter extends CursorAdapter {
 
 		public BehindListAdapter(Context context, Cursor c) {

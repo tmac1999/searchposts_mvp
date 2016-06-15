@@ -17,6 +17,7 @@ import com.avos.avoscloud.RequestPasswordResetCallback;
 import com.avos.avoscloud.SaveCallback;
 import com.avos.avoscloud.SignUpCallback;
 import com.mrz.searchposts.component.login.LoginActivity;
+import com.mrz.searchposts.data.bean.Post;
 
 import java.util.Calendar;
 import java.util.HashMap;
@@ -93,12 +94,30 @@ public class AVService {
         AVUser.logOut();
     }
 
-    public static void createAdvice(String userId, String devicename,String advice, SaveCallback saveCallback) {
+    public static void createAdvice(String userId, String devicename, String advice, SaveCallback saveCallback) {
         AVObject doing = new AVObject("SuggestionByUser");
         doing.put("UserObjectId", userId);
         doing.put("UserSuggestion", advice);
-        doing.put("devicename",devicename);
+        doing.put("devicename", devicename);
         doing.saveInBackground(saveCallback);
     }
+
+    public static void sendPost(Post post, SaveCallback saveCallback) {
+        AVObject doing = new AVObject("Post");
+        doing.put("title", post.title);
+        doing.put("content", post.content);
+        doing.put("userID", post.userID);
+        doing.put("time", post.time);
+        doing.put("userName", post.userName);
+        if (post.imgURL != null) {
+            doing.put("imgURL", post.imgURL);
+        }
+        doing.saveInBackground(saveCallback);
+    }
+    public static void queryAllPost(FindCallback findCallback) {
+        AVQuery query = new AVQuery("Post");
+        query.findInBackground(findCallback);
+    }
+
 }
 

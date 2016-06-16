@@ -60,6 +60,7 @@ import java.util.concurrent.Executors;
  * webview 与 sildingmenu滑动冲突
  * <p/>
  * version2.0     16.6.15 （1）ui优化，侧边栏进入activity页面时为平移动画（2）增加用户体系（3）增加交流版 ，发帖功能 （4） 增加意见反馈
+ *                 TODO 注册，补全1.1代码。 下拉刷新 ，ui?
  *
  * @author mrz
  */

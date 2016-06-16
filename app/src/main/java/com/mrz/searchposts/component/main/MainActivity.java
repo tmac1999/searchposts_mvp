@@ -542,4 +542,9 @@ public class MainActivity extends SlidingFragmentActivity implements
         }
 
     }
+    @Override
+    public void startActivity(Intent intent) {
+        super.startActivity(intent);
+        overridePendingTransition(R.anim.in_lefttoright, R.anim.out_righttoleft);
+    }
 }

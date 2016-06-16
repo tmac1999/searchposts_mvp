@@ -105,7 +105,7 @@
       <excludeFolder url="file://$MODULE_DIR$/build/outputs" />
       <excludeFolder url="file://$MODULE_DIR$/build/tmp" />
     </content>
-    <orderEntry type="jdk" jdkName="Android API 18 Platform" jdkType="Android SDK" />
+    <orderEntry type="jdk" jdkName="Android API 19 Platform" jdkType="Android SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" name="avossearch-v2.6.9.1" level="project" />
     <orderEntry type="library" exported="" name="fastjson" level="project" />
@@ -118,6 +118,6 @@
     <orderEntry type="library" exported="" name="android-async-http-1.4.6" level="project" />
     <orderEntry type="library" exported="" name="httpmime-4.2.4" level="project" />
     <orderEntry type="module" module-name="slidingmenu" exported="" />
-    <orderEntry type="library" exported="" name="android-android-18" level="project" />
+    <orderEntry type="library" exported="" name="android-android-19" level="project" />
   </component>
 </module>

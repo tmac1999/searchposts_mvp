@@ -1,6 +1,5 @@
 package com.mrz.searchposts.component.communicate.SendPost;
 
-import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -14,6 +13,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.mrz.searchposts.R;
+import com.mrz.searchposts.component.BaseThemeActivity;
 import com.mrz.searchposts.data.SPRepository;
 import com.mrz.searchposts.data.bean.Post;
 import com.mrz.searchposts.session.UserSession;
@@ -23,7 +23,7 @@ import com.mrz.searchposts.utils.ToastUtils;
 
 import java.io.FileNotFoundException;
 
-public class SendPostActivity extends Activity implements View.OnClickListener, SendPostContract.View {
+public class SendPostActivity extends BaseThemeActivity implements View.OnClickListener, SendPostContract.View {
 
 
     private SendPostPresenter sendPostPresenter;
@@ -129,5 +129,6 @@ public class SendPostActivity extends Activity implements View.OnClickListener, 
     @Override
     public void showPostSuccessedUI() {
         ToastUtils.longToast("发帖成功！");
+        finish();
     }
 }

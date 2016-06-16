@@ -1,14 +1,17 @@
 package com.mrz.searchposts.component.communicate.SubjectList;
 
-import android.app.Activity;
 import android.os.Bundle;
-import android.widget.Adapter;
 
 import com.mrz.searchposts.R;
+import com.mrz.searchposts.component.BaseThemeActivity;
 import com.mrz.searchposts.data.SPRepository;
 import com.mrz.searchposts.utils.ToastUtils;
+import com.mrz.searchposts.view.catloadingview.CatLoadingView;
 
-public class SubjectListActivity extends Activity implements SubjectListContract.View{
+public class SubjectListActivity extends BaseThemeActivity implements SubjectListContract.View{
+
+    private CatLoadingView catLoadingView;
+
     @Override
     public void showList(SubjectListAdapter adapter) {
         xlv_postlist.setAdapter(adapter);
@@ -17,7 +20,7 @@ public class SubjectListActivity extends Activity implements SubjectListContract
 
     @Override
     public void showRequestSuccessedUI() {
-
+        catLoadingView.dismiss();
     }
 
     @Override
@@ -32,7 +35,8 @@ public class SubjectListActivity extends Activity implements SubjectListContract
 
     @Override
     public void showLoadingBar() {
-
+        catLoadingView = new CatLoadingView();
+        catLoadingView.show(getSupportFragmentManager(),"");
     }
 
     @Override

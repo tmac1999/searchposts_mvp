@@ -11,6 +11,7 @@
     tools:context=".component.communicate.SubjectList.SubjectListActivity">
 
     <com.mrz.searchposts.view.XListView
+        tools:listitem="@layout/item_subject"
         android:id="@+id/xlv_postlist"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>

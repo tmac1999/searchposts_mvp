@@ -1,12 +1,12 @@
 package com.mrz.searchposts;
 
-import android.app.Activity;
 import android.os.Bundle;
-import android.view.View;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-public class PostDetailActivity extends Activity {
+import com.mrz.searchposts.component.BaseThemeActivity;
+
+public class PostDetailActivity extends BaseThemeActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

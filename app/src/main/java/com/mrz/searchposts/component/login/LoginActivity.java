@@ -1,17 +1,19 @@
 package com.mrz.searchposts.component.login;
 
-import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
 import com.mrz.searchposts.R;
+import com.mrz.searchposts.component.BaseThemeActivity;
+import com.mrz.searchposts.component.register.RegisterActivity;
 import com.mrz.searchposts.utils.ToastUtils;
 
 import test.Injection;
 
-public class LoginActivity extends Activity implements LoginContract.View, View.OnClickListener{
+public class LoginActivity extends BaseThemeActivity implements LoginContract.View, View.OnClickListener {
 
     private LoginPresenter loginPresenter;
 
@@ -27,7 +29,7 @@ public class LoginActivity extends Activity implements LoginContract.View, View.
 
     @Override
     public void showRegisterUI() {
-
+        startActivity(new Intent(this, RegisterActivity.class));
     }
 
     @Override
@@ -84,11 +86,11 @@ public class LoginActivity extends Activity implements LoginContract.View, View.
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.button_login:
                 String username = editText_userName.getText().toString();
                 String psw = editText_userPassword.getText().toString();
-                loginPresenter.login(username,psw);
+                loginPresenter.login(username, psw);
                 break;
             case R.id.button_register:
                 loginPresenter.openRegisterUI();

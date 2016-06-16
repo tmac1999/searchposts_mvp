@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 18
+    compileSdkVersion 19
     buildToolsVersion "23.0.2"
 
     defaultConfig {
         applicationId "com.mrz.searchposts"
-        minSdkVersion 11
-        targetSdkVersion 18
+        minSdkVersion 19
+        targetSdkVersion 19
     }
 
     buildTypes {

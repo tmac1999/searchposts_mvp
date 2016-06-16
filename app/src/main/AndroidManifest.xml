@@ -34,6 +34,8 @@
         </activity>
         <activity android:name=".component.communicate.SubjectList.SubjectListActivity">
         </activity>
+        <activity android:name=".component.register.RegisterActivity">
+        </activity>
     </application>
 
 </manifest>

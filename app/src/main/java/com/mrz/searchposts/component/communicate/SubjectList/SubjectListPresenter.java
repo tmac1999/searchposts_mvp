@@ -24,23 +24,24 @@ public class SubjectListPresenter implements SubjectListContract.Presenter {
 
     @Override
     public void getListFromNet() {
-        FindCallback findCallback = new FindCallback<AVObject>(){
+        subjectListActivity.showLoadingBar();
+        FindCallback findCallback = new FindCallback<AVObject>() {
 
             @Override
             public void done(List<AVObject> list, AVException e) {
-                if (e!=null){
+                if (e == null) {
                     ArrayList<Post> postList = getPostList(list);
                     SubjectListAdapter subjectListAdapter = new SubjectListAdapter(postList, subjectListActivity);
                     subjectListActivity.showList(subjectListAdapter);
                     subjectListActivity.showRequestSuccessedUI();
-                }else{
+                } else {
                     subjectListActivity.showRequestFailedUI();
                 }
             }
 
             private ArrayList<Post> getPostList(List<AVObject> list) {
                 ArrayList<Post> posts = new ArrayList<Post>();
-                for(AVObject object:list){
+                for (AVObject object : list) {
                     Post post = new Post();
                     post.imgURL = (String) object.get("imgURL");
                     post.content = (String) object.get("content");

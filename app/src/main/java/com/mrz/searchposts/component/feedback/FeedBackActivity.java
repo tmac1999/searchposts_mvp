@@ -1,6 +1,5 @@
 package com.mrz.searchposts.component.feedback;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -8,11 +7,12 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 import com.mrz.searchposts.R;
+import com.mrz.searchposts.component.BaseThemeActivity;
 import com.mrz.searchposts.utils.ToastUtils;
 
 import test.Injection;
 
-public class FeedBackActivity extends Activity implements View.OnClickListener,FeedBackContract.View{
+public class FeedBackActivity extends BaseThemeActivity implements View.OnClickListener,FeedBackContract.View{
     // Content View Elements
 
     private EditText editText_about_app_user_input;

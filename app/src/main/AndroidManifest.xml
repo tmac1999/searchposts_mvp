@@ -36,6 +36,8 @@
         </activity>
         <activity android:name=".component.register.RegisterActivity">
         </activity>
+        <activity android:name=".component.me.MeActivity">
+        </activity>
     </application>
 
 </manifest>

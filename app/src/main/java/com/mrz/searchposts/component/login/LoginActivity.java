@@ -97,6 +97,7 @@ public class LoginActivity extends BaseThemeActivity implements LoginContract.Vi
                 break;
             case R.id.button_forget_password:
                 loginPresenter.openForgetPwdUI();
+                break;
         }
     }
 }

@@ -1,6 +1,9 @@
 package com.mrz.searchposts.component.register;
 
+import com.avos.avoscloud.AVException;
+import com.avos.avoscloud.SignUpCallback;
 import com.mrz.searchposts.data.SPRepository;
+import com.mrz.searchposts.service.AVService;
 
 /**
  * Created by zhengpeng on 2016/5/30.
@@ -14,8 +17,29 @@ public class RegisterPresenter implements RegisterContract.Presenter {
     }
 
     @Override
-    public void register() {
-
+    public void register(String username,String password,String email) {
+        SignUpCallback signUpCallback = new SignUpCallback() {
+            public void done(AVException e) {
+                registerActivity.progressDialogDismiss();
+                if (e == null) {
+                    registerActivity.showRegisterSuccessedUI();
+                    registerActivity.finish();
+                } else {
+                    switch (e.getCode()) {
+                        case AVException.USERNAME_TAKEN:
+                            registerActivity.showRegisterTips(RegisterContract.RegisterResult.USERNAME_EXIST);
+                            break;
+                        case AVException.EMAIL_TAKEN:
+                            registerActivity.showRegisterTips(RegisterContract.RegisterResult.EMAIL_TAKEN);
+                            break;
+                        default:
+                            registerActivity.showRegisterTips(RegisterContract.RegisterResult.ERROR);
+                            break;
+                    }
+                }
+            }
+        };
+        AVService.signUp(username, password, email, signUpCallback);
     }
 
     @Override

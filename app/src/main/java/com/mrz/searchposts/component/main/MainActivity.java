@@ -40,6 +40,7 @@ import com.mrz.searchposts.component.communicate.SendPost.SendPostActivity;
 import com.mrz.searchposts.component.communicate.SubjectList.SubjectListActivity;
 import com.mrz.searchposts.component.feedback.FeedBackActivity;
 import com.mrz.searchposts.component.login.LoginActivity;
+import com.mrz.searchposts.component.me.MeActivity;
 import com.mrz.searchposts.data.db.DBHelper;
 import com.mrz.searchposts.engine.SearchEngine;
 import com.mrz.searchposts.utils.CommonUtils;
@@ -60,7 +61,7 @@ import java.util.concurrent.Executors;
  * webview 与 sildingmenu滑动冲突
  * <p/>
  * version2.0     16.6.15 （1）ui优化，侧边栏进入activity页面时为平移动画（2）增加用户体系（3）增加交流版 ，发帖功能 （4） 增加意见反馈
- *                 TODO 注册，补全1.1代码。 下拉刷新 ，ui?
+ * TODO 注册，补全1.1代码。 下拉刷新 ，ui?
  *
  * @author mrz
  */
@@ -144,12 +145,12 @@ public class MainActivity extends SlidingFragmentActivity implements
         LinearLayout ll_feedback = (LinearLayout) findViewById(R.id.ll_feedback);
         LinearLayout ll_communicate = (LinearLayout) findViewById(R.id.ll_communicate);
         LinearLayout ll_communicate_area = (LinearLayout) findViewById(R.id.ll_communicate_area);
+        LinearLayout ll_me = (LinearLayout) findViewById(R.id.ll_me);
         ll_jumptolist.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this,
-                        PostListActivity.class));
+                startActivity(new Intent(MainActivity.this, PostListActivity.class));
             }
         });
         ll_about.setOnClickListener(new OnClickListener() {
@@ -185,6 +186,13 @@ public class MainActivity extends SlidingFragmentActivity implements
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this, SubjectListActivity.class));
+            }
+        });
+        ll_me.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, MeActivity.class));
             }
         });
     }
@@ -543,6 +551,7 @@ public class MainActivity extends SlidingFragmentActivity implements
         }
 
     }
+
     @Override
     public void startActivity(Intent intent) {
         super.startActivity(intent);

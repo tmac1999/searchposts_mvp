@@ -1,5 +1,7 @@
 package com.mrz.searchposts.component.register;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -45,13 +47,37 @@ public class RegisterActivity extends BaseThemeActivity implements RegisterContr
 
     @Override
     public void showRegisterTips(RegisterContract.RegisterResult result) {
-
+        switch (result){
+            case USERNAME_EXIST:
+                ToastUtils.longToast(getString(R.string.error_register_user_name_repeat));
+                break;
+            case EMAIL_TAKEN:
+                ToastUtils.longToast(getString(R.string.error_register_email_repeat));
+                break;
+            case ERROR:
+                ToastUtils.longToast(getString(R.string.network_error));
+                break;
+        }
     }
 
     @Override
     public void showRegisterSuccessedUI() {
-
+        new AlertDialog.Builder(this)
+                .setTitle(
+                        this.getResources().getString(
+                                R.string.dialog_message_title))
+                .setMessage(
+                        this.getResources().getString(
+                                R.string.success_register_success))
+                .setNegativeButton(android.R.string.ok,
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,
+                                                int which) {
+                                dialog.dismiss();
+                            }
+                        }).show();
     }
+
 
     @Override
     public void showRegisterFailedUI() {
@@ -83,7 +109,10 @@ public class RegisterActivity extends BaseThemeActivity implements RegisterContr
                         if (!editText_register_userName.getText().toString().isEmpty()) {
                             if (!editText_register_email.getText().toString().isEmpty()) {
                                 progressDialogShow();
-                                registerPresenter.register();
+                                String username = editText_register_userName.getText().toString();
+                                String password = editText_register_userPassword.getText().toString();
+                                String email = editText_register_email.getText().toString();
+                                registerPresenter.register(username, password, email);
                             } else {
                                 ToastUtils.showSingletonToast(
                                         getString(R.string.error_register_email_address_null));
@@ -106,5 +135,9 @@ public class RegisterActivity extends BaseThemeActivity implements RegisterContr
     private void progressDialogShow() {
         catLoadingView = new CatLoadingView();
         catLoadingView.show(getSupportFragmentManager(), "");
+    }
+
+    public void progressDialogDismiss() {
+        catLoadingView.dismiss();
     }
 }

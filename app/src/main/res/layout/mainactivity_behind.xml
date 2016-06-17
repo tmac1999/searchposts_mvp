@@ -119,4 +119,22 @@
             android:text="交流版"
             android:textSize="20sp"/>
     </LinearLayout>
+    <LinearLayout
+        android:id="@+id/ll_me"
+        style="@style/behind_view_item"
+        android:background="#7A7890"
+        >
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/about_selector"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="我"
+            android:textSize="20sp"/>
+    </LinearLayout>
 </LinearLayout>

@@ -24,6 +24,6 @@ public class BaseThemeActivity extends FragmentActivity{
     @Override
     public void startActivity(Intent intent) {
         super.startActivity(intent);
-        overridePendingTransition(R.anim.in_righttoleft, R.anim.out_lefttoright);
+        overridePendingTransition(R.anim.in_righttoleft, R.anim.out_righttoleft);
     }
 }

@@ -20,10 +20,10 @@ public interface RegisterContract {
 
     interface Presenter extends BasePresenter {
 
-        void register();
+        void register(String username,String password,String email);
 
     }
      enum RegisterResult{
-        EMPTY_PARAM,INCORRECT_PWD,INCORRECT_USERNAME,USERNAME_EXIST,ERROR,SUCCESS
+        EMPTY_PARAM,INCORRECT_PWD,INCORRECT_USERNAME,USERNAME_EXIST,ERROR,SUCCESS,EMAIL_TAKEN
     }
 }

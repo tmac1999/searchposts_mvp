@@ -76,6 +76,7 @@ public class RegisterActivity extends BaseThemeActivity implements RegisterContr
                                 dialog.dismiss();
                             }
                         }).show();
+        finish();
     }
 
 

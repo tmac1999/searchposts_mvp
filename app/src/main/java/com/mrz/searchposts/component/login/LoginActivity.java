@@ -5,7 +5,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
+import com.avos.avoscloud.AVUser;
 import com.mrz.searchposts.R;
 import com.mrz.searchposts.component.BaseThemeActivity;
 import com.mrz.searchposts.component.register.RegisterActivity;
@@ -24,7 +27,11 @@ public class LoginActivity extends BaseThemeActivity implements LoginContract.Vi
 
     @Override
     public void showLoginResult(LoginContract.LoginResult loginResult) {
-
+        switch (loginResult) {
+            case ERROR:
+                ToastUtils.longToast("服务器异常，请稍后再试");
+                break;
+        }
     }
 
     @Override
@@ -60,7 +67,8 @@ public class LoginActivity extends BaseThemeActivity implements LoginContract.Vi
     private Button button_login;
     private Button button_register;
     private Button button_forget_password;
-
+    private TextView tv_already_login;
+    private RelativeLayout rl_login;
     // End Of Content View Elements
 
     private void bindViews() {
@@ -70,6 +78,8 @@ public class LoginActivity extends BaseThemeActivity implements LoginContract.Vi
         button_login = (Button) findViewById(R.id.button_login);
         button_register = (Button) findViewById(R.id.button_register);
         button_forget_password = (Button) findViewById(R.id.button_forget_password);
+        rl_login = (RelativeLayout) findViewById(R.id.rl_login);
+        tv_already_login = (TextView) findViewById(R.id.tv_already_login);
     }
 
 
@@ -82,6 +92,26 @@ public class LoginActivity extends BaseThemeActivity implements LoginContract.Vi
         button_register.setOnClickListener(this);
         button_forget_password.setOnClickListener(this);
         loginPresenter = new LoginPresenter(Injection.provideTasksRepository(getApplicationContext()), this);
+        refreshUI();
+    }
+
+    private void refreshUI() {
+        AVUser currentUser = AVUser.getCurrentUser();
+
+        if (currentUser == null) {
+            rl_login.setVisibility(View.VISIBLE);
+            tv_already_login.setVisibility(View.GONE);
+        } else {
+            rl_login.setVisibility(View.GONE);
+            tv_already_login.setVisibility(View.VISIBLE);
+        }
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        refreshUI();
     }
 
     @Override

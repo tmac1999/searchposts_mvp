@@ -5,49 +5,64 @@
                 android:paddingLeft="@dimen/activity_horizontal_margin"
                 android:paddingRight="@dimen/activity_horizontal_margin"
                 android:paddingTop="@dimen/activity_vertical_margin"
-                 >
+    >
 
-    <EditText
-        android:id="@+id/editText_userName"
+    <RelativeLayout
+        android:id="@+id/rl_login"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="@string/login_input_user_name" >
-    </EditText>
+        android:layout_height="match_parent">
 
-    <EditText
-        android:id="@+id/editText_userPassword"
+
+        <EditText
+            android:id="@+id/editText_userName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="@string/login_input_user_name">
+        </EditText>
+
+        <EditText
+            android:id="@+id/editText_userPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/editText_userName"
+            android:layout_below="@+id/editText_userName"
+            android:ems="10"
+            android:hint="@string/login_input_user_password"
+            android:inputType="textPassword">
+        </EditText>
+
+        <Button
+            android:id="@+id/button_login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/editText_userPassword"
+            android:layout_below="@+id/editText_userPassword"
+            android:text="@string/login_button_login"/>
+
+        <Button
+            android:id="@+id/button_register"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/button_login"
+            android:layout_below="@+id/button_login"
+            android:text="@string/login_button_register"/>
+
+        <Button
+            android:id="@+id/button_forget_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/button_register"
+            android:layout_below="@+id/button_register"
+            android:text="@string/login_button_forget_password"/>
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tv_already_login"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/editText_userName"
-        android:layout_below="@+id/editText_userName"
-        android:ems="10"
-        android:hint="@string/login_input_user_password"
-        android:inputType="textPassword" >
-    </EditText>
-
-    <Button
-        android:id="@+id/button_login"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/editText_userPassword"
-        android:layout_below="@+id/editText_userPassword"
-        android:text="@string/login_button_login" />
-
-    <Button
-        android:id="@+id/button_register"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/button_login"
-        android:layout_below="@+id/button_login"
-        android:text="@string/login_button_register" />
-
-    <Button
-        android:id="@+id/button_forget_password"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/button_register"
-        android:layout_below="@+id/button_register"
-        android:text="@string/login_button_forget_password" />
-
+        android:layout_height="200dp"
+        android:gravity="center"
+        android:text="您已经登录"
+        android:textSize="20dp"
+        android:visibility="gone"/>
 </RelativeLayout>

@@ -1,5 +1,6 @@
 package com.mrz.searchposts.component.me;
 
+import com.avos.avoscloud.AVUser;
 import com.mrz.searchposts.data.SPRepository;
 
 /**
@@ -14,6 +15,7 @@ public class MePresenter implements MeContract.Presenter{
 
     @Override
     public void getMeData() {
+        String username = AVUser.getCurrentUser().getUsername();
 
     }
 

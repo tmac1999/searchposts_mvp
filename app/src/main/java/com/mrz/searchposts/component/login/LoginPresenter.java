@@ -10,9 +10,10 @@ import com.mrz.searchposts.data.SPRepository;
 /**
  * Created by zhengpeng on 2016/5/27.
  */
-public class LoginPresenter implements LoginContract.Presenter{
+public class LoginPresenter implements LoginContract.Presenter {
     private LoginActivity loginActivity;
-    public LoginPresenter(SPRepository spRepository,LoginActivity loginActivity){
+
+    public LoginPresenter(SPRepository spRepository, LoginActivity loginActivity) {
         this.loginActivity = loginActivity;
 
     }
@@ -20,16 +21,23 @@ public class LoginPresenter implements LoginContract.Presenter{
 
     @Override
     public void login(String username, String pwd) {
-        if (TextUtils.isEmpty(username)||TextUtils.isEmpty(pwd)){
+        if (TextUtils.isEmpty(username) || TextUtils.isEmpty(pwd)) {
             loginActivity.showLoginResult(LoginContract.LoginResult.EMPTYPARAM);
             return;
         }
         AVUser.logInInBackground(username, pwd, new LogInCallback<AVUser>() {
             @Override
             public void done(AVUser avUser, AVException e) {
-                saveAVUser(avUser);
-                e.printStackTrace();
-                loginActivity.showLoginFinishedUI();
+
+                if (e != null) {
+                    e.printStackTrace();
+                    loginActivity.showLoginResult(LoginContract.LoginResult.ERROR);
+                } else {
+                    saveAVUser(avUser);
+
+                    loginActivity.showLoginFinishedUI();
+                }
+
             }
         });
     }
@@ -44,6 +52,7 @@ public class LoginPresenter implements LoginContract.Presenter{
      * ###如果不调用 登出 方法，当前用户的缓存将永久保存在客户端
      * ###AVUser.logOut();// 清除缓存用户对象
      * ###AVUser currentUser = AVUser.getCurrentUser();// 现在的 currentUser 是 null 了
+     *
      * @param avUser
      */
     private void saveAVUser(AVUser avUser) {

@@ -26,11 +26,22 @@ public class LoginActivity extends BaseThemeActivity implements LoginContract.Vi
     }
 
     @Override
-    public void showLoginResult(LoginContract.LoginResult loginResult) {
+    public void showLoginResult(LoginContract.LoginResult loginResult, int resultCode) {
         switch (loginResult) {
             case ERROR:
-                ToastUtils.longToast("服务器异常，请稍后再试");
+                ToastUtils.longToast("服务器异常，请稍后再试:" + resultCode);
                 break;
+            case EMPTYPARAM:
+                ToastUtils.longToast("用户名或者密码不能为空");
+                break;
+            case NONEEXISTENT_USER:
+                ToastUtils.longToast("用户不存在");
+                break;
+            case WRONGPWD:
+                ToastUtils.longToast("密码错误");
+                break;
+
+
         }
     }
 

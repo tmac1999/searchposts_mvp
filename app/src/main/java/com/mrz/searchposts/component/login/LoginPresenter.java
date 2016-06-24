@@ -18,11 +18,12 @@ public class LoginPresenter implements LoginContract.Presenter {
 
     }
 
+    int USELESSCODE = 0;
 
     @Override
     public void login(String username, String pwd) {
         if (TextUtils.isEmpty(username) || TextUtils.isEmpty(pwd)) {
-            loginActivity.showLoginResult(LoginContract.LoginResult.EMPTYPARAM);
+            loginActivity.showLoginResult(LoginContract.LoginResult.EMPTYPARAM, USELESSCODE);
             return;
         }
         AVUser.logInInBackground(username, pwd, new LogInCallback<AVUser>() {
@@ -31,7 +32,20 @@ public class LoginPresenter implements LoginContract.Presenter {
 
                 if (e != null) {
                     e.printStackTrace();
-                    loginActivity.showLoginResult(LoginContract.LoginResult.ERROR);
+                    switch (e.getCode()) {
+                        case AVException.USERNAME_PASSWORD_MISMATCH:
+                            loginActivity.showLoginResult(LoginContract.LoginResult.WRONGPWD, e.getCode());
+                            break;
+                        case AVException.USER_DOESNOT_EXIST:
+                            loginActivity.showLoginResult(LoginContract.LoginResult.NONEEXISTENT_USER, e.getCode());
+                            break;
+                        case AVException.TIMEOUT:
+                            loginActivity.showLoginResult(LoginContract.LoginResult.ERROR, e.getCode());
+                            break;
+                        default:
+                            loginActivity.showLoginResult(LoginContract.LoginResult.ERROR, e.getCode());
+                    }
+                    ;
                 } else {
                     saveAVUser(avUser);
 

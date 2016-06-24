@@ -13,7 +13,7 @@ public interface LoginContract {
     interface View extends BaseView<Presenter> {
         void showWrongPwd();
 
-        void showLoginResult(LoginResult loginResult);
+        void showLoginResult(LoginResult loginResult,int resultcode);
 
         void showRegisterUI();
 
@@ -29,7 +29,7 @@ public interface LoginContract {
 
         void openForgetPwdUI();
     }
-    public enum LoginResult{
+    enum LoginResult{
         EMPTYPARAM,WRONGPWD,NONEEXISTENT_USER,ERROR,SUCCESS
     }
 }

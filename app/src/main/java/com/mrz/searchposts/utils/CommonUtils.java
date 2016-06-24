@@ -28,12 +28,16 @@ public class CommonUtils {
         else if ( ContentResolver.SCHEME_FILE.equals( scheme ) ) {
             data = uri.getPath();
         } else if ( ContentResolver.SCHEME_CONTENT.equals( scheme ) ) {
-            Cursor cursor = context.getContentResolver().query( uri, new String[] { MediaStore.Images.ImageColumns.DATA }, null, null, null );
+            Cursor cursor = context.getContentResolver().query( uri, new String[] { MediaStore.Images.ImageColumns.DATA ,MediaStore.Images.ImageColumns.DISPLAY_NAME,MediaStore.Images.ImageColumns.SIZE,MediaStore.Images.ImageColumns.DATE_ADDED }, null, null, null );
             if ( null != cursor ) {
                 if ( cursor.moveToFirst() ) {
                     int index = cursor.getColumnIndex( MediaStore.Images.ImageColumns.DATA );
                     if ( index > -1 ) {
                         data = cursor.getString( index );
+                        String display = cursor.getString( 1 );
+                        String data1 = cursor.getString( 2 );
+                        String data2 = cursor.getString( 3 );
+                        //TODO upload img in android 5.0+
                     }
                 }
                 cursor.close();

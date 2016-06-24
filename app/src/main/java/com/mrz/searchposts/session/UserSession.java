@@ -32,7 +32,10 @@ public class UserSession {
     }
 
     public static String getLoginUserName() {
-        return null;
+        if (AVUser.getCurrentUser()==null){
+            return null;
+        }
+        return AVUser.getCurrentUser().getUsername();
     }
 
     public static String getUserName() {

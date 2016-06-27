@@ -17,7 +17,7 @@ import com.mrz.searchposts.component.BaseThemeActivity;
 import com.mrz.searchposts.data.SPRepository;
 import com.mrz.searchposts.data.bean.Post;
 import com.mrz.searchposts.session.UserSession;
-import com.mrz.searchposts.utils.CommonUtils;
+import com.mrz.searchposts.utils.FileUtils;
 import com.mrz.searchposts.utils.TimeUtils;
 import com.mrz.searchposts.utils.ToastUtils;
 
@@ -107,7 +107,8 @@ public class SendPostActivity extends BaseThemeActivity implements View.OnClickL
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
             Uri uri = data.getData();
-            realFilePath = CommonUtils.getRealFilePath(SendPostActivity.this, uri);
+           // realFilePath = CommonUtils.getRealFilePath(SendPostActivity.this, uri);
+            realFilePath = FileUtils.getPath(SendPostActivity.this, uri);
             Log.e("uri", uri.toString());
             ContentResolver cr = this.getContentResolver();
             try {

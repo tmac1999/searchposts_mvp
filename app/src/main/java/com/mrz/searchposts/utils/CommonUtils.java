@@ -9,14 +9,13 @@ import android.provider.MediaStore;
 public class CommonUtils {
 	public static int dp2px(Context context,int dpValue){
 		float density = context.getResources().getDisplayMetrics().density;
-		int px = (int) (dpValue * density + 0.5f);
-		return px;
+		return (int) (dpValue * density + 0.5f);
 	}
     /**
      * Try to return the absolute file path from the given Uri
      *
-     * @param context
-     * @param uri
+     * @param context 可以是applicationcontext
+     * @param uri     content://   格式
      * @return the file path or null
      */
     public static String getRealFilePath( final Context context, final Uri uri ) {
@@ -28,10 +27,10 @@ public class CommonUtils {
         else if ( ContentResolver.SCHEME_FILE.equals( scheme ) ) {
             data = uri.getPath();
         } else if ( ContentResolver.SCHEME_CONTENT.equals( scheme ) ) {
-            Cursor cursor = context.getContentResolver().query( uri, new String[] { MediaStore.Images.ImageColumns.DATA ,MediaStore.Images.ImageColumns.DISPLAY_NAME,MediaStore.Images.ImageColumns.SIZE,MediaStore.Images.ImageColumns.DATE_ADDED }, null, null, null );
+            Cursor cursor = context.getContentResolver().query( uri, new String[] { MediaStore.Images.Media.DATA ,MediaStore.Images.ImageColumns.DISPLAY_NAME,MediaStore.Images.ImageColumns.SIZE,MediaStore.Images.ImageColumns.DATE_ADDED }, null, null, null );
             if ( null != cursor ) {
                 if ( cursor.moveToFirst() ) {
-                    int index = cursor.getColumnIndex( MediaStore.Images.ImageColumns.DATA );
+                    int index = cursor.getColumnIndex( MediaStore.Images.Media.DATA );
                     if ( index > -1 ) {
                         data = cursor.getString( index );
                         String display = cursor.getString( 1 );

@@ -45,6 +45,7 @@ import com.mrz.searchposts.data.db.DBHelper;
 import com.mrz.searchposts.engine.SearchEngine;
 import com.mrz.searchposts.utils.CommonUtils;
 import com.mrz.searchposts.utils.TimeUtils;
+import com.mrz.searchposts.view.catloadingview.CatLoadingView;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -266,11 +267,14 @@ public class MainActivity extends SlidingFragmentActivity implements
                 break;
         }
     }
-
+    private CatLoadingView catLoadingView;
     private void showProgressBar() {
         Toast.makeText(getApplicationContext(), "开始创建数据库...", Toast.LENGTH_LONG).show();
         tv_progress.setVisibility(View.VISIBLE);
         tv_progress.setText("页数" + count);
+        catLoadingView = new CatLoadingView();
+        catLoadingView.show(getSupportFragmentManager(),"");
+
     }
 
     private void startSearchEngine(final String searchPrefix,
@@ -278,6 +282,7 @@ public class MainActivity extends SlidingFragmentActivity implements
         if (!checkTiebaName(encodeTiebaName, tiebaName)) {
             return;
         }
+        progressPaperCount = 0;
         if (count > 9) {// 大于10页开启线程池搜索
             ExecutorService pool = Executors
                     .newFixedThreadPool(THREADCOUNT + 1);
@@ -406,7 +411,7 @@ public class MainActivity extends SlidingFragmentActivity implements
         } else {
             // 是一个新贴吧搜索请求
             /**
-             * 1.判断此贴吧页数是否过大，过大提醒用户会占用大量内存 2.创建新表,将新表信息插入 tiebaList表
+             *TODO 1.判断此贴吧页数是否过大，过大提醒用户会占用大量内存 2.创建新表,将新表信息插入 tiebaList表
              * 3.开始搜索插入新的数据
              */
             createNewTable(encodeTiebaName, tiebaName);
@@ -447,11 +452,11 @@ public class MainActivity extends SlidingFragmentActivity implements
                 + " (_id integer primary key autoincrement, url varchar(30), title varchar(100), author varchar(50), posttime varchar(20), replycount varchar(10))";
         db.execSQL(sql1);
 
-        String sql2 = "insert into tiebalist(name,encodename,createtime) values(?,?,?)";
+        String sql2 = "insert into tiebalist(name,encodename,createtime,isdelete) values(?,?,?,?)";
         db.execSQL(
                 sql2,
                 new String[]{tiebaName, encodeTiebaName,
-                        TimeUtils.getCurrentTime()});
+                        TimeUtils.getCurrentTime(), "false"});
     }
 
     @Override
@@ -493,16 +498,22 @@ public class MainActivity extends SlidingFragmentActivity implements
         }
         return false;
     }
-
+    private void stopShowProgressBar()
+    {
+        catLoadingView.dismiss();
+        Toast.makeText(this, "建表完成,请到数据表页面查看。", Toast.LENGTH_LONG).show();
+    }
+    int progressPaperCount = 0;
     private Handler handler = new Handler() {
-        int progressPaperCount = 0;
+
 
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case SHOW_TOTALPAGECOUNT:
                     tv_progress.setVisibility(View.VISIBLE);
-                    tv_progress.setText("贴吧一共有" + msg.obj + "页");
+                    Integer obj = (Integer) msg.obj;
+                    tv_progress.setText("贴吧一共有" + obj + "页，\n建表需" + obj * 3 / 1000.0F + "m空间。");
                     break;
                 case GET_POSTCOUNTERROR:
                     Toast.makeText(MainActivity.this, "查找贴吧页数出错", Toast.LENGTH_LONG).show();
@@ -510,6 +521,10 @@ public class MainActivity extends SlidingFragmentActivity implements
                 default:
                     progressPaperCount += (Integer) msg.obj;
                     tv_progress.setText("当前进度：" + progressPaperCount + "/" + count);
+
+                    MainActivity.this.tv_progress.setText("当前进度：" + progressPaperCount + "/" + MainActivity.this.count);
+                    if (progressPaperCount == MainActivity.this.count)
+                        MainActivity.this.stopShowProgressBar();
                     break;
             }
         }
@@ -555,6 +570,48 @@ public class MainActivity extends SlidingFragmentActivity implements
     @Override
     public void startActivity(Intent intent) {
         super.startActivity(intent);
-        overridePendingTransition(R.anim.in_lefttoright, R.anim.out_righttoleft);
+        overridePendingTransition(R.anim.in_righttoleft, R.anim.out_righttoleft);
     }
+
+
+//    @SuppressLint({"NewApi"})
+//    private boolean checkTiebaName(String paramString1, String paramString2)
+//    {
+//        Log.i("MainActivity", "encodeTiebaName:" + paramString1);
+//        Cursor localCursor = this.db.rawQuery("select name from sqlite_master where type ='table' and name = ?", new String[] { paramString2 });
+//        if (localCursor.moveToNext())
+//        {
+//            String str = localCursor.getString(0);
+//            if (str.equals(paramString2))
+//            {
+//                showDemoDialog();
+//                AlertDialog.Builder localBuilder = new AlertDialog.Builder(this);
+//                localBuilder.setTitle("提示");
+//                localBuilder.setMessage("您已经创建过此贴吧数据表，若确定将删除原标并重新建立新表");
+//                AlertDialog localAlertDialog = localBuilder.create();
+//                localBuilder.setOnCancelListener(new DialogInterface.OnCancelListener(localAlertDialog)
+//                {
+//                    public void onCancel(DialogInterface paramDialogInterface)
+//                    {
+//                        this.val$alertDialog.dismiss();
+//                        Toast.makeText(MainActivity.this, "OnCancelListener", 0).show();
+//                    }
+//                });
+//                localBuilder.setOnDismissListener(new DialogInterface.OnDismissListener(localAlertDialog)
+//                {
+//                    public void onDismiss(DialogInterface paramDialogInterface)
+//                    {
+//                        this.val$alertDialog.dismiss();
+//                        Toast.makeText(MainActivity.this, "OnDismissListener", 0).show();
+//                    }
+//                });
+//                localAlertDialog.show();
+//            }
+//            Log.i("MainActivity", "cursor0" + str);
+//            return false;
+//        }
+//        createNewTable(paramString1, paramString2);
+//        return true;
+//    }
+
 }

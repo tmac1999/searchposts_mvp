@@ -7,9 +7,11 @@
     <string name="confirm">确定</string>
     <string name="search">搜索建表</string>
     <string name="version">version 1.0</string>
-    <string name="caption">\u3000\u3000输入贴吧名，点击确定后进入贴吧。点击搜索建表会创建本地数据库，然后在侧边栏就可以跳转进入已经创建好的本地数据库页面啦！（目前仅支持按帖子名字搜索，速度是不是刚刚的？搜索完后直接点击就可以进入看帖子啦~）</string>
-    <string name="contact">有问题和建议请在下载页面下面留言或者直接联系我qq:1276940597</string>
-
+    <!--<string name="caption">\u3000\u3000输入贴吧名，点击确定后进入贴吧。点击搜索建表会创建本地数据库，然后在侧边栏就可以跳转进入已经创建好的本地数据库页面啦！（目前仅支持按帖子名字搜索，速度是不是刚刚的？搜索完后直接点击就可以进入看帖子啦~）</string>-->
+    <!--<string name="contact">有问题和建议请在下载页面下面留言或者直接联系我qq:1276940597</string>-->
+<string name="caption">"　　输入贴吧名，点击确定后进入贴吧。点击搜索建表会创建本地数据库，然后在侧边栏就可以跳转进入已经创建好的本地数据库页面啦！（目前仅支持按帖子名字搜索，速度是不是刚刚的？搜索完后直接点击就可以进入看帖子啦~ps:最关键的!!百度自带吧内搜索结果肯定没有这个全!百度自带吧内搜索结果肯定没有这个全!百度自带吧内搜索结果肯定没有这个全!重要的事说3遍！可以自己搜搜看）
+　　本地数据库页面侧滑，可以选择贴吧（支持创建多个贴吧表），长按贴吧名字可以删除已创建贴吧。"</string>
+    <string name="contact">有问题和建议请在下载页面下面留言或者直接联系我qq:119141701</string>
     <string name="empty_directory">Empty Directory</string>
     <string name="storage_removed">Storage was removed or unmounted.</string>
     <string name="choose_file">Select a file</string>
@@ -64,7 +66,7 @@
 
     <string name="action_logout_alert_message">确定更换账号么？之前保留的账号信息将被删除。</string>
     <string name="action_about_app_text">关于作者:\n\thi，大家好，我是mrz。我的微博是:\n\thttp://weibo.com/p/1005051297050455\n\t感谢您使用此APP。欢迎对本APP提出您宝贵的意见和建议。</string>
-    <string name="action_about_app_doing_list_title">有什么意见或者建议么？骚年。:</string>
+    <string name="action_about_app_doing_list_title">有什么意见或者建议么？骚年？</string>
     <string name="action_about_app_submit_doing">提交</string>
     <string name="action_about_app_submit_doing_hint">输入意见或希望添加的功能。</string>
     <string name="action_about_app_submit_message_success">感谢您的提交。祝您生活愉快。</string>

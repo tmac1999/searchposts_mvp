@@ -48,7 +48,7 @@ public class SubjectListPresenter implements SubjectListContract.Presenter {
                     post.title = (String) object.get("title");
                     post.time = (String) object.get("time");
                     post.userName = (String) object.get("userName");
-                    posts.add(post);
+                    posts.add(0,post);
                 }
                 return posts;
             }

@@ -129,7 +129,7 @@ public class SendPostActivity extends BaseThemeActivity implements View.OnClickL
 
     @Override
     public void showPostSuccessedUI() {
-        ToastUtils.longToast("发帖成功！");
+        ToastUtils.longToast("发帖成功！请到交流版查看");
         finish();
     }
 }

@@ -3,11 +3,8 @@ package com.mrz.searchposts.component.main;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.DialogInterface.OnCancelListener;
-import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -41,10 +38,12 @@ import com.mrz.searchposts.component.communicate.SubjectList.SubjectListActivity
 import com.mrz.searchposts.component.feedback.FeedBackActivity;
 import com.mrz.searchposts.component.login.LoginActivity;
 import com.mrz.searchposts.component.me.MeActivity;
+import com.mrz.searchposts.data.dao.LinkDao;
 import com.mrz.searchposts.data.db.DBHelper;
 import com.mrz.searchposts.engine.SearchEngine;
 import com.mrz.searchposts.utils.CommonUtils;
 import com.mrz.searchposts.utils.TimeUtils;
+import com.mrz.searchposts.utils.ToastUtils;
 import com.mrz.searchposts.view.catloadingview.CatLoadingView;
 
 import java.util.concurrent.ExecutorService;
@@ -62,7 +61,7 @@ import java.util.concurrent.Executors;
  * webview 与 sildingmenu滑动冲突
  * <p/>
  * version2.0     16.6.15 （1）ui优化，侧边栏进入activity页面时为平移动画（2）增加用户体系（3）增加交流版 ，发帖功能 （4） 增加意见反馈
- * TODO 注册，补全1.1代码。 下拉刷新 ，ui?
+ * TODO 注册，补全1.1代码。 下拉刷新 ，ui?，建表时间Or进度条
  *
  * @author mrz
  */
@@ -261,27 +260,31 @@ public class MainActivity extends SlidingFragmentActivity implements
                     Toast.makeText(getApplicationContext(), "贴吧名字不能为空或者还没进入贴吧", Toast.LENGTH_LONG)
                             .show();
                 } else {// 都不为空
-                    startSearchEngine(searchURL, encodeTiebaName, tiebaName);
-                    showProgressBar();
+                    shouldCreateTiebaTable(encodeTiebaName, tiebaName);
                 }
                 break;
         }
     }
+
     private CatLoadingView catLoadingView;
+
     private void showProgressBar() {
-        Toast.makeText(getApplicationContext(), "开始创建数据库...", Toast.LENGTH_LONG).show();
+        ToastUtils.showSingletonToast("开始创建数据库...");
         tv_progress.setVisibility(View.VISIBLE);
         tv_progress.setText("页数" + count);
         catLoadingView = new CatLoadingView();
-        catLoadingView.show(getSupportFragmentManager(),"");
+        catLoadingView.show(getSupportFragmentManager(), "");
 
     }
 
     private void startSearchEngine(final String searchPrefix,
                                    final String encodeTiebaName, final String tiebaName) {
-        if (!checkTiebaName(encodeTiebaName, tiebaName)) {
-            return;
-        }
+
+        startFillInTiebaTable(searchPrefix, tiebaName);
+    }
+
+    private void startFillInTiebaTable(final String searchPrefix, final String tiebaName) {
+        showProgressBar();
         progressPaperCount = 0;
         if (count > 9) {// 大于10页开启线程池搜索
             ExecutorService pool = Executors
@@ -338,15 +341,14 @@ public class MainActivity extends SlidingFragmentActivity implements
     }
 
     /**
-     * 查询数据库中是否已经存在该tieba的表。给出提示
+     * 查询数据库中是否已经存在该tieba的表(查询是否存在表，而不是tiebalist表中是否存在此列)。给出提示
      *
-     * @param encodeTiebaName
-     * @return true 开启搜索 false 用户取消了搜索
+     * @param encodeTiebaName 1.不存在表，或者存在用户按下确定要删除重载)开启搜索
+     *                        2.用户取消了搜索
      * @author mrz
      */
     @SuppressLint("NewApi")
-    private boolean checkTiebaName(String encodeTiebaName, String tiebaName) {
-        boolean isCanceled = false;
+    private void shouldCreateTiebaTable(final String encodeTiebaName, final String tiebaName) {
         // String sql =
         // "SELECT * FROM sqlite_master where type = 'table' and name = ?";
         Log.i(TAG, "encodeTiebaName:" + encodeTiebaName);
@@ -356,58 +358,32 @@ public class MainActivity extends SlidingFragmentActivity implements
             String tableName = cursor.getString(0);
             if (tableName.equals(tiebaName)) {
                 // 弹出提示框，提醒用户
-                showDemoDialog();
-                Builder builder = new AlertDialog.Builder(MainActivity.this);
+                //  showDemoDialog();
+                final Builder builder = new AlertDialog.Builder(MainActivity.this);
                 builder.setTitle("提示");
-                builder.setMessage("您已经创建过此贴吧数据表，若确定将删除原标并重新建立新表");
+                builder.setMessage("您已经创建过此贴吧数据表，若确定将删除原表并重新建立新表");
+                builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        builder.create().dismiss();
+
+                    }
+                });
+                builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        ToastUtils.showSingletonToast("原" + tiebaName + "数据表已删除");
+                        LinkDao.deleteTableByTiebaName(getApplicationContext(), tiebaName);
+                        createNewTable(encodeTiebaName, tiebaName);
+                        ToastUtils.showSingletonToast("新" + tiebaName + "数据表已创建");
+                        startSearchEngine(searchURL, encodeTiebaName, tiebaName);
+
+                    }
+                });
                 final AlertDialog alertDialog = builder.create();
-                builder.setOnCancelListener(new OnCancelListener() {
-
-                    @Override
-                    public void onCancel(DialogInterface dialog) {
-                        alertDialog.dismiss();
-                        Toast.makeText(MainActivity.this, "OnCancelListener", Toast.LENGTH_LONG)
-                                .show();
-                    }
-                });
-                builder.setOnDismissListener(new OnDismissListener() {
-
-                    @Override
-                    public void onDismiss(DialogInterface dialog) {
-                        alertDialog.dismiss();
-                        Toast.makeText(MainActivity.this, "OnDismissListener",
-                                Toast.LENGTH_LONG).show();
-
-                    }
-                });
-
                 alertDialog.show();
-                // builder.setPositiveButton("确定",new
-                // DialogInterface.OnClickListener() {
-                //
-                // @Override
-                // public void onClick(DialogInterface dialog, int which) {
-                // //用户点击确定后，清空此表，开始搜索插入新的数据
-                // //db.execSQL(sql);//清空表
-                // //db.execSQL(sql);//清空自增列
-                //
-                // Toast.makeText(MainActivity.this, "数据表已删除", 0).show();
-                // //更新tiebalist表的时间。
-                //
-                // }
-                // });
-                // builder.setNegativeButton("取消", new
-                // DialogInterface.OnClickListener() {
-                //
-                // @Override
-                // public void onClick(DialogInterface dialog, int which) {
-                // alertDialog.dismiss();
-                // }
-                // });
-
             }
             Log.i(TAG, "cursor0" + tableName);
-            return isCanceled;
         } else {
             // 是一个新贴吧搜索请求
             /**
@@ -415,35 +391,9 @@ public class MainActivity extends SlidingFragmentActivity implements
              * 3.开始搜索插入新的数据
              */
             createNewTable(encodeTiebaName, tiebaName);
-
-            return true;
+            startSearchEngine(searchURL, encodeTiebaName, tiebaName);
         }
 
-    }
-
-    private void showDemoDialog() {
-        Dialog dialog = new Dialog(MainActivity.this);
-        dialog.setTitle("提示");
-        TextView textView = new TextView(MainActivity.this);
-        textView.setText("您已经创建过此贴吧数据表，若确定将删除原标并重新建立新表");
-        dialog.setContentView(textView);
-        dialog.show();
-        dialog.setOnDismissListener(new OnDismissListener() {
-
-            @Override
-            public void onDismiss(DialogInterface dialog) {
-                Log.i(TAG, "OnDismissListener");
-                dialog.dismiss();
-            }
-        });
-        dialog.setOnCancelListener(new OnCancelListener() {
-
-            @Override
-            public void onCancel(DialogInterface dialog) {
-                Log.i(TAG, "OnCancelListener");
-                dialog.dismiss();
-            }
-        });
     }
 
     private void createNewTable(String encodeTiebaName, String tiebaName) {
@@ -498,11 +448,12 @@ public class MainActivity extends SlidingFragmentActivity implements
         }
         return false;
     }
-    private void stopShowProgressBar()
-    {
+
+    private void stopShowProgressBar() {
         catLoadingView.dismiss();
-        Toast.makeText(this, "建表完成,请到数据表页面查看。", Toast.LENGTH_LONG).show();
+        ToastUtils.showSingletonToast("建表完成,请到数据表页面查看。");
     }
+
     int progressPaperCount = 0;
     private Handler handler = new Handler() {
 
@@ -572,46 +523,4 @@ public class MainActivity extends SlidingFragmentActivity implements
         super.startActivity(intent);
         overridePendingTransition(R.anim.in_righttoleft, R.anim.out_righttoleft);
     }
-
-
-//    @SuppressLint({"NewApi"})
-//    private boolean checkTiebaName(String paramString1, String paramString2)
-//    {
-//        Log.i("MainActivity", "encodeTiebaName:" + paramString1);
-//        Cursor localCursor = this.db.rawQuery("select name from sqlite_master where type ='table' and name = ?", new String[] { paramString2 });
-//        if (localCursor.moveToNext())
-//        {
-//            String str = localCursor.getString(0);
-//            if (str.equals(paramString2))
-//            {
-//                showDemoDialog();
-//                AlertDialog.Builder localBuilder = new AlertDialog.Builder(this);
-//                localBuilder.setTitle("提示");
-//                localBuilder.setMessage("您已经创建过此贴吧数据表，若确定将删除原标并重新建立新表");
-//                AlertDialog localAlertDialog = localBuilder.create();
-//                localBuilder.setOnCancelListener(new DialogInterface.OnCancelListener(localAlertDialog)
-//                {
-//                    public void onCancel(DialogInterface paramDialogInterface)
-//                    {
-//                        this.val$alertDialog.dismiss();
-//                        Toast.makeText(MainActivity.this, "OnCancelListener", 0).show();
-//                    }
-//                });
-//                localBuilder.setOnDismissListener(new DialogInterface.OnDismissListener(localAlertDialog)
-//                {
-//                    public void onDismiss(DialogInterface paramDialogInterface)
-//                    {
-//                        this.val$alertDialog.dismiss();
-//                        Toast.makeText(MainActivity.this, "OnDismissListener", 0).show();
-//                    }
-//                });
-//                localAlertDialog.show();
-//            }
-//            Log.i("MainActivity", "cursor0" + str);
-//            return false;
-//        }
-//        createNewTable(paramString1, paramString2);
-//        return true;
-//    }
-
 }

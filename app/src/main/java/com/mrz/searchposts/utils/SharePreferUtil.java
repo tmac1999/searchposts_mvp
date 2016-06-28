@@ -16,7 +16,17 @@ public class SharePreferUtil {
         this.context = context;
     }
 
+    public static String KEY_LAST_BROWSE_TIEBANAME = "KEY_LAST_BROWSE_TIEBANAME";
 
+    public String getLastBrowseTiebaName() {
+        SharedPreferences sp = context.getSharedPreferences("USERINFO", Context.MODE_PRIVATE);
+        return sp.getString(KEY_LAST_BROWSE_TIEBANAME, null);
+
+    }
+    public void setLastBrowseTiebaName(String name) {
+        SharedPreferences sp = context.getSharedPreferences("USERINFO", Context.MODE_PRIVATE);
+        sp.edit().putString(KEY_LAST_BROWSE_TIEBANAME,name).apply();
+    }
     /**
      * 保存用户信息
      */

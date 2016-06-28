@@ -98,9 +98,15 @@ public class LinkDao {
         localSQLiteDatabase.close();
     }
 
-    public static boolean isExistInTiebaList(Context paramContext, String paramString) {
+    /**
+     *  该贴吧是否存在
+     * @param paramContext 可以是application
+     * @param tiebaName 贴吧名
+     * @return
+     */
+    public static boolean isExistInTiebaList(Context paramContext, String tiebaName) {
         SQLiteDatabase localSQLiteDatabase = new DBHelper(paramContext).getWritableDatabase();
-        if (localSQLiteDatabase.rawQuery("select name from tiebalist where name = ?", new String[]{paramString}).getCount() < 1) {
+        if (localSQLiteDatabase.rawQuery("select name from tiebalist where name = ? AND isdelete='false'", new String[]{tiebaName}).getCount() < 1) {
             localSQLiteDatabase.close();
             return false;
         }

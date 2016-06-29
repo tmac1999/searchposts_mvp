@@ -5,47 +5,58 @@
               android:layout_height="match_parent"
               android:orientation="vertical">
 
-    <LinearLayout
+    <HorizontalScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_height="match_parent">
 
-        <TextView
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:text="按标题搜索"/>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <EditText
-            android:id="@+id/et_searchbytitle"
-            android:layout_width="140dp"
-            android:layout_height="wrap_content"
-            android:hint="输入标题"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
-        <EditText
-            android:layout_width="90dp"
-            android:layout_height="wrap_content"
-            android:hint="按作者搜索(pendent)"
-            android:singleLine="true"/>
+                <TextView
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:text="按标题搜索"/>
 
-        <EditText
-            android:layout_width="@dimen/posttime"
-            android:layout_height="wrap_content"
-            android:hint="发布日期"
-            android:singleLine="true"/>
+                <EditText
+                    android:id="@+id/et_searchbytitle"
+                    android:layout_width="140dp"
+                    android:hint="输入标题"
+                    style="@style/et_postlist"/>
 
-        <EditText
-            android:layout_width="@dimen/replycount"
-            android:layout_height="wrap_content"
-            android:hint="回帖数"
-            android:singleLine="true"/>
-    </LinearLayout>
+                <EditText
+                    android:layout_width="90dp"
+                    android:hint="按作者搜索(pendent)"
+                    style="@style/et_postlist"
+                    android:singleLine="true"/>
 
-    <ListView
-        android:id="@+id/lv_postlist"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        tools:visibility="gone">
-    </ListView>
+                <EditText
+                    android:layout_width="@dimen/posttime"
+                    android:hint="发布日期"
+                    style="@style/et_postlist"
+                    android:singleLine="true"/>
+
+                <EditText
+                    android:layout_width="@dimen/replycount"
+                    android:hint="回帖数"
+                    style="@style/et_postlist"
+                    android:singleLine="true"/>
+            </LinearLayout>
+
+            <ListView
+                android:id="@+id/lv_postlist"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:visibility="gone">
+            </ListView>
+        </LinearLayout>
+    </HorizontalScrollView>
 
     <TextView
         android:id="@+id/tv_empty"

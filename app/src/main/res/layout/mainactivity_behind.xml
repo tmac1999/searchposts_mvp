@@ -38,11 +38,8 @@
 
         <TextView
             android:id="@+id/tv_about"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
             android:text="关于(操作详解)"
-            android:textSize="20sp"/>
+            style="@style/tv_mainbehind"/>
     </LinearLayout>
 
     <LinearLayout
@@ -57,11 +54,9 @@
             android:src="@drawable/about_selector"/>
 
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
+            style="@style/tv_mainbehind"
             android:text="登录"
-            android:textSize="20sp"/>
+            />
     </LinearLayout>
 
     <LinearLayout
@@ -76,11 +71,8 @@
             android:src="@drawable/about_selector"/>
 
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
             android:text="意见反馈"
-            android:textSize="20sp"/>
+            style="@style/tv_mainbehind"/>
     </LinearLayout>
 
     <LinearLayout
@@ -95,11 +87,8 @@
             android:src="@drawable/about_selector"/>
 
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
             android:text="发帖"
-            android:textSize="20sp"/>
+            style="@style/tv_mainbehind"/>
     </LinearLayout>
     <LinearLayout
         android:id="@+id/ll_communicate_area"
@@ -113,11 +102,8 @@
             android:src="@drawable/about_selector"/>
 
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
             android:text="交流版"
-            android:textSize="20sp"/>
+            style="@style/tv_mainbehind"/>
     </LinearLayout>
     <LinearLayout
         android:id="@+id/ll_me"
@@ -131,10 +117,7 @@
             android:src="@drawable/about_selector"/>
 
         <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
             android:text="我"
-            android:textSize="20sp"/>
+            style="@style/tv_mainbehind"/>
     </LinearLayout>
 </LinearLayout>

@@ -101,6 +101,15 @@ public class AVService {
         doing.put("devicename", devicename);
         doing.saveInBackground(saveCallback);
     }
+    public static void updateUserSearchData(String userId, String userName, String tiebaName,String createTiebaTableTime,int tiebaPageSum,SaveCallback saveCallback) {
+        AVObject doing = new AVObject("UserSearchData");
+        doing.put("UserObjectId", userId);
+        doing.put("userName", userName);
+        doing.put("tiebaName",tiebaName);
+        doing.put("createTiebaTableTime",createTiebaTableTime);
+        doing.put("tiebaPageSum",tiebaPageSum);
+        doing.saveInBackground(saveCallback);
+    }
 
     public static void sendPost(Post post, SaveCallback saveCallback) {
         AVObject doing = new AVObject("Post");

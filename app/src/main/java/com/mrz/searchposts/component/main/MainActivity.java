@@ -29,6 +29,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.avos.avoscloud.AVException;
+import com.avos.avoscloud.SaveCallback;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.jeremyfeinstein.slidingmenu.lib.app.SlidingFragmentActivity;
 import com.mrz.searchposts.PostListActivity;
@@ -41,6 +43,8 @@ import com.mrz.searchposts.component.me.MeActivity;
 import com.mrz.searchposts.data.dao.LinkDao;
 import com.mrz.searchposts.data.db.DBHelper;
 import com.mrz.searchposts.engine.SearchEngine;
+import com.mrz.searchposts.service.AVService;
+import com.mrz.searchposts.session.UserSession;
 import com.mrz.searchposts.utils.CommonUtils;
 import com.mrz.searchposts.utils.TimeUtils;
 import com.mrz.searchposts.utils.ToastUtils;
@@ -83,6 +87,7 @@ public class MainActivity extends SlidingFragmentActivity implements
     private SQLiteDatabase db;
     private LinearLayout ll;
     private TextView tv_progress;
+    private Integer tiebaPageSum;
 
     @SuppressLint("NewApi")
     @Override
@@ -279,8 +284,21 @@ public class MainActivity extends SlidingFragmentActivity implements
 
     private void startSearchEngine(final String searchPrefix,
                                    final String encodeTiebaName, final String tiebaName) {
-
+        updateUserData(tiebaName);
         startFillInTiebaTable(searchPrefix, tiebaName);
+    }
+
+    private void updateUserData(String tiebaName) {
+        SaveCallback saveCallback = new SaveCallback() {
+            @Override
+            public void done(AVException e) {
+                if (e == null) {
+                } else {
+                    e.printStackTrace();
+                }
+            }
+        };
+        AVService.updateUserSearchData(UserSession.getUserID(),UserSession.getLoginUserName(),tiebaName,TimeUtils.getCurrentTime(),tiebaPageSum,saveCallback );
     }
 
     private void startFillInTiebaTable(final String searchPrefix, final String tiebaName) {
@@ -463,8 +481,8 @@ public class MainActivity extends SlidingFragmentActivity implements
             switch (msg.what) {
                 case SHOW_TOTALPAGECOUNT:
                     tv_progress.setVisibility(View.VISIBLE);
-                    Integer obj = (Integer) msg.obj;
-                    tv_progress.setText("贴吧一共有" + obj + "页，\n建表需" + obj * 3 / 1000.0F + "m空间。");
+                    tiebaPageSum = (Integer) msg.obj;
+                    tv_progress.setText("贴吧一共有" + tiebaPageSum + "页，\n建表需" + tiebaPageSum * 3 / 1000.0F + "m空间。");
                     break;
                 case GET_POSTCOUNTERROR:
                     Toast.makeText(MainActivity.this, "查找贴吧页数出错", Toast.LENGTH_LONG).show();

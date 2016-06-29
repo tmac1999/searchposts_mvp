@@ -1,45 +1,49 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".component.main.MainActivity" >
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context=".component.main.MainActivity">
 
     <LinearLayout
         android:id="@+id/ll"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal" >
+        android:orientation="horizontal">
 
         <Button
             android:id="@+id/btn_search"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/search" />
+            android:background="@drawable/selector_main_btn"
+            android:text="@string/search"/>
 
         <Button
+            android:layout_marginLeft="5dp"
             android:id="@+id/btn_confirm"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/confirm" />
+            android:background="@drawable/selector_main_btn"
+            android:text="@string/confirm"/>
 
         <EditText
             android:id="@+id/et_tiebaname"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="大冶六中" />
+            android:hint="请输入贴吧名然后点击确定"
+            android:textSize="12sp"/>
 
         <TextView
             android:id="@+id/tv_progress"
-            android:visibility="gone"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:visibility="gone"/>
     </LinearLayout>
 
     <WebView
         android:id="@+id/wv_tieba"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/ll" />
+        android:layout_below="@+id/ll"/>
 
 </RelativeLayout>

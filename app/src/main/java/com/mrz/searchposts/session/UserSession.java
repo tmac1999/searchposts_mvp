@@ -24,7 +24,7 @@ public class UserSession {
      *
      * @return
      */
-    public static String getLoginUserID() {
+    private static String getLoginUserID() {
         if (AVUser.getCurrentUser()==null){
             return null;
         }

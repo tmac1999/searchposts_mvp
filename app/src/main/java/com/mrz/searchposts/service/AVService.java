@@ -101,13 +101,14 @@ public class AVService {
         doing.put("devicename", devicename);
         doing.saveInBackground(saveCallback);
     }
-    public static void updateUserSearchData(String userId, String userName, String tiebaName,String createTiebaTableTime,int tiebaPageSum,SaveCallback saveCallback) {
+
+    public static void updateUserSearchData(String userId, String userName, String tiebaName, String createTiebaTableTime, int tiebaPageSum, SaveCallback saveCallback) {
         AVObject doing = new AVObject("UserSearchData");
         doing.put("UserObjectId", userId);
         doing.put("userName", userName);
-        doing.put("tiebaName",tiebaName);
-        doing.put("createTiebaTableTime",createTiebaTableTime);
-        doing.put("tiebaPageSum",tiebaPageSum);
+        doing.put("tiebaName", tiebaName);
+        doing.put("createTiebaTableTime", createTiebaTableTime);
+        doing.put("tiebaPageSum", tiebaPageSum);
         doing.saveInBackground(saveCallback);
     }
 
@@ -123,10 +124,21 @@ public class AVService {
         }
         doing.saveInBackground(saveCallback);
     }
+
     public static void queryAllPost(FindCallback findCallback) {
         AVQuery query = new AVQuery("Post");
         query.findInBackground(findCallback);
     }
+
+    public static void queryPostByPage(FindCallback findCallback, int pageCount) {
+        AVQuery query = new AVQuery("Post");
+        query.addDescendingOrder("createdAt");
+        query.setLimit(10);
+        query.skip((pageCount-1) * 10);
+        query.findInBackground(findCallback);
+
+    }
+
 
 }
 

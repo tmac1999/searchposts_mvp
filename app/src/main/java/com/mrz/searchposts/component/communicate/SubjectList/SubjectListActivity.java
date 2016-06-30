@@ -5,7 +5,9 @@ import android.os.Bundle;
 import com.mrz.searchposts.R;
 import com.mrz.searchposts.component.BaseThemeActivity;
 import com.mrz.searchposts.data.SPRepository;
+import com.mrz.searchposts.utils.TimeUtils;
 import com.mrz.searchposts.utils.ToastUtils;
+import com.mrz.searchposts.view.XListView;
 import com.mrz.searchposts.view.catloadingview.CatLoadingView;
 
 public class SubjectListActivity extends BaseThemeActivity implements SubjectListContract.View{
@@ -21,6 +23,8 @@ public class SubjectListActivity extends BaseThemeActivity implements SubjectLis
     @Override
     public void showRequestSuccessedUI() {
         catLoadingView.dismiss();
+        xlv_postlist.setRefreshTime(TimeUtils.getCurrentTime());
+        xlv_postlist.stopRefresh();
     }
 
     @Override
@@ -53,7 +57,7 @@ public class SubjectListActivity extends BaseThemeActivity implements SubjectLis
 
         xlv_postlist = (com.mrz.searchposts.view.XListView) findViewById(R.id.xlv_postlist);
     }
-
+    int currentPage = 1;
     SubjectListPresenter subjectListPresenter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +65,24 @@ public class SubjectListActivity extends BaseThemeActivity implements SubjectLis
         setContentView(R.layout.activity_subject_list);
         bindViews();
         subjectListPresenter = new SubjectListPresenter(SPRepository.getInstance(null, null), this);
-        subjectListPresenter.getListFromNet();
+        xlv_postlist.setPullLoadEnable(true);
+        subjectListPresenter.getListFromNet(1);
+        xlv_postlist.setXListViewListener(new XListView.IXListViewListener() {
+            @Override
+            public void onRefresh() {
+                subjectListPresenter.getListFromNet(1);
+            }
+
+            @Override
+            public void onLoadMore() {
+                currentPage++;
+                subjectListPresenter.getListFromNet(currentPage);
+            }
+        });
+    }
+
+    @Override
+    public void resetPageNum() {
+        currentPage=1;
     }
 }

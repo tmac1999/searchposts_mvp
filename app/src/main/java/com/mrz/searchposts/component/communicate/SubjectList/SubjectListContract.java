@@ -16,11 +16,13 @@ public interface SubjectListContract {
         void showRequestSuccessedUI();
 
         void showRequestFailedUI();
+
+        void resetPageNum();
     }
 
     interface Presenter extends BasePresenter {
 
-        void getListFromNet();
+        void getListFromNet(int page);
 
         void getListFromLocal();
 

@@ -23,14 +23,22 @@ public class SubjectListPresenter implements SubjectListContract.Presenter {
 
 
     @Override
-    public void getListFromNet() {
+    public void getListFromNet(final int page) {
+
         subjectListActivity.showLoadingBar();
         FindCallback findCallback = new FindCallback<AVObject>() {
 
+            private ArrayList<Post> postList = new ArrayList<Post>();
+
             @Override
             public void done(List<AVObject> list, AVException e) {
+                if (page==1){
+                    //说明是首次进入或者刷新页面（不是加载更多），此时清空数据
+                    postList.clear();
+                    subjectListActivity.resetPageNum();
+                }
                 if (e == null) {
-                    ArrayList<Post> postList = getPostList(list);
+                    postList = getPostList(list);
                     SubjectListAdapter subjectListAdapter = new SubjectListAdapter(postList, subjectListActivity);
                     subjectListActivity.showList(subjectListAdapter);
                     subjectListActivity.showRequestSuccessedUI();
@@ -40,7 +48,6 @@ public class SubjectListPresenter implements SubjectListContract.Presenter {
             }
 
             private ArrayList<Post> getPostList(List<AVObject> list) {
-                ArrayList<Post> posts = new ArrayList<Post>();
                 for (AVObject object : list) {
                     Post post = new Post();
                     post.imgURL = (String) object.get("imgURL");
@@ -48,12 +55,12 @@ public class SubjectListPresenter implements SubjectListContract.Presenter {
                     post.title = (String) object.get("title");
                     post.time = (String) object.get("time");
                     post.userName = (String) object.get("userName");
-                    posts.add(0,post);
+                    postList.add(post);
                 }
-                return posts;
+                return postList;
             }
         };
-        AVService.queryAllPost(findCallback);
+        AVService.queryPostByPage(findCallback,page);
     }
 
     @Override

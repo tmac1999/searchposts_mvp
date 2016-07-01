@@ -26,6 +26,7 @@ import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -85,9 +86,13 @@ public class MainActivity extends SlidingFragmentActivity implements
     private Button btn_search;
     private String searchURL;
     private SQLiteDatabase db;
-    private LinearLayout ll;
+    private RelativeLayout relativeLayout;
     private TextView tv_progress;
     private Integer tiebaPageSum;
+    /**
+     * 搜索开始时间，用于估算总计耗时
+     */
+    private long startTime;
 
     @SuppressLint("NewApi")
     @Override
@@ -102,7 +107,7 @@ public class MainActivity extends SlidingFragmentActivity implements
         btn_search = (Button) findViewById(R.id.btn_search);
         et_tiebaname = (EditText) findViewById(R.id.et_tiebaname);
         tv_progress = (TextView) findViewById(R.id.tv_progress);
-        ll = (LinearLayout) findViewById(R.id.ll);
+        relativeLayout = (RelativeLayout) findViewById(R.id.rl);
         btn_confirm.setOnClickListener(this);
         btn_search.setOnClickListener(this);
 
@@ -278,6 +283,7 @@ public class MainActivity extends SlidingFragmentActivity implements
         tv_progress.setVisibility(View.VISIBLE);
         tv_progress.setText("页数" + count);
         catLoadingView = new CatLoadingView();
+        catLoadingView.setCancelable(false);
         catLoadingView.show(getSupportFragmentManager(), "");
 
     }
@@ -298,12 +304,13 @@ public class MainActivity extends SlidingFragmentActivity implements
                 }
             }
         };
-        AVService.updateUserSearchData(UserSession.getUserID(),UserSession.getLoginUserName(),tiebaName,TimeUtils.getCurrentTime(),tiebaPageSum,saveCallback );
+        AVService.updateUserSearchData(UserSession.getUserID(), UserSession.getLoginUserName(), tiebaName, TimeUtils.getCurrentTime(), tiebaPageSum, saveCallback);
     }
 
     private void startFillInTiebaTable(final String searchPrefix, final String tiebaName) {
         showProgressBar();
         progressPaperCount = 0;
+        startTime = System.currentTimeMillis();
         if (count > 9) {// 大于10页开启线程池搜索
             ExecutorService pool = Executors
                     .newFixedThreadPool(THREADCOUNT + 1);
@@ -482,16 +489,19 @@ public class MainActivity extends SlidingFragmentActivity implements
                 case SHOW_TOTALPAGECOUNT:
                     tv_progress.setVisibility(View.VISIBLE);
                     tiebaPageSum = (Integer) msg.obj;
-                    tv_progress.setText("贴吧一共有" + tiebaPageSum + "页，\n建表需" + tiebaPageSum * 3 / 1000.0F + "m空间，耗时约"+tiebaPageSum/80+"分钟");
+                    tv_progress.setText("贴吧一共有" + tiebaPageSum + "页，\n建表需" + tiebaPageSum * 3 / 1000.0F + "m空间，耗时约" + tiebaPageSum / 80 + "分钟");
                     break;
                 case GET_POSTCOUNTERROR:
                     Toast.makeText(MainActivity.this, "查找贴吧页数出错", Toast.LENGTH_LONG).show();
                     break;
                 default:
                     progressPaperCount += (Integer) msg.obj;
-                    tv_progress.setText("当前进度：" + progressPaperCount + "/" + count);
-
-                    MainActivity.this.tv_progress.setText("当前进度：" + progressPaperCount + "/" + MainActivity.this.count);
+                    long l = System.currentTimeMillis();
+                    long elapseTime = l - startTime;
+                    long evaluateTotalTIme = elapseTime / progressPaperCount * count;
+                    tv_progress.setText("当前进度：" + progressPaperCount + "/" + count + "预估时间：" + TimeUtils.formatTimeMillis(elapseTime) + "/" + TimeUtils.formatTimeMillis(evaluateTotalTIme));
+//                    tv_progress.layout(tv_progress.getLeft(), 0, tv_progress.getRight(), tv_progress.getBottom());
+//                    tv_progress.requestLayout();
                     if (progressPaperCount == MainActivity.this.count)
                         MainActivity.this.stopShowProgressBar();
                     break;

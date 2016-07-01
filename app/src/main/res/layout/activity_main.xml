@@ -4,54 +4,58 @@
                 android:layout_height="match_parent"
                 tools:context=".component.main.MainActivity">
 
-    <LinearLayout
-        android:id="@+id/ll"
+    <RelativeLayout
+        android:id="@+id/rl"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:orientation="horizontal">
+        >
+
 
         <Button
-            android:layout_marginLeft="5dp"
             android:id="@+id/btn_search"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:textSize="12sp"
+            android:layout_marginStart="5dp"
             android:background="@drawable/selector_main_btn"
-            android:text="@string/search"/>
+            android:text="@string/search"
+            android:textSize="12sp"/>
 
         <Button
-            android:layout_marginLeft="5dp"
             android:id="@+id/btn_confirm"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_marginStart="5dp"
+            android:layout_toEndOf="@id/btn_search"
             android:background="@drawable/selector_main_btn"
-            android:textSize="12sp"
-            android:text="@string/confirm"/>
+            android:text="@string/confirm"
+            android:textSize="12sp"/>
 
         <EditText
             android:id="@+id/et_tiebaname"
-            android:layout_width="0dp"
-            android:layout_height="45dp"
-            android:layout_weight="1"
-            android:hint="请输入贴吧名然后点击确定"
+            android:layout_width="95dp"
+            android:layout_height="match_parent"
+            android:layout_toEndOf="@+id/btn_confirm"
             android:gravity="center"
+            android:hint="请输入贴吧名然后点击确定"
             android:textSize="12sp"/>
 
         <TextView
             android:id="@+id/tv_progress"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="45dp"
-            android:text=""
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_toEndOf="@+id/et_tiebaname"
             android:gravity="center"
+            android:text=""
             android:textSize="12sp"
             tools:visibility="gone"/>
-    </LinearLayout>
+
+    </RelativeLayout>
 
     <WebView
         android:id="@+id/wv_tieba"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/ll"/>
+        android:layout_below="@+id/rl"/>
 
 </RelativeLayout>

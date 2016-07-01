@@ -10,21 +10,36 @@ import com.mrz.searchposts.utils.ToastUtils;
 import com.mrz.searchposts.view.XListView;
 import com.mrz.searchposts.view.catloadingview.CatLoadingView;
 
-public class SubjectListActivity extends BaseThemeActivity implements SubjectListContract.View{
+public class SubjectListActivity extends BaseThemeActivity implements SubjectListContract.View {
 
     private CatLoadingView catLoadingView;
 
+    private SubjectListContract.RequestType requestType ;
     @Override
     public void showList(SubjectListAdapter adapter) {
         xlv_postlist.setAdapter(adapter);
+        if (requestType == SubjectListContract.RequestType.REFRESH) {
+
+        } else {
+            xlv_postlist.setSelection(adapter.getCount());
+        }
+
+
     }
 
 
     @Override
     public void showRequestSuccessedUI() {
+
         catLoadingView.dismiss();
-        xlv_postlist.setRefreshTime(TimeUtils.getCurrentTime());
-        xlv_postlist.stopRefresh();
+        if (requestType == SubjectListContract.RequestType.REFRESH) {//说明是刷新
+            xlv_postlist.setRefreshTime(TimeUtils.getCurrentTime());
+            xlv_postlist.stopRefresh();
+        } else {//说明是请求更多
+            xlv_postlist.stopLoadMore();
+            xlv_postlist.setFootTextView("");
+        }
+
     }
 
     @Override
@@ -40,7 +55,7 @@ public class SubjectListActivity extends BaseThemeActivity implements SubjectLis
     @Override
     public void showLoadingBar() {
         catLoadingView = new CatLoadingView();
-        catLoadingView.show(getSupportFragmentManager(),"");
+        catLoadingView.show(getSupportFragmentManager(), "");
     }
 
     @Override
@@ -57,8 +72,10 @@ public class SubjectListActivity extends BaseThemeActivity implements SubjectLis
 
         xlv_postlist = (com.mrz.searchposts.view.XListView) findViewById(R.id.xlv_postlist);
     }
-    int currentPage = 1;
+
+
     SubjectListPresenter subjectListPresenter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,23 +83,20 @@ public class SubjectListActivity extends BaseThemeActivity implements SubjectLis
         bindViews();
         subjectListPresenter = new SubjectListPresenter(SPRepository.getInstance(null, null), this);
         xlv_postlist.setPullLoadEnable(true);
-        subjectListPresenter.getListFromNet(1);
+        requestType = SubjectListContract.RequestType.REFRESH;
+        subjectListPresenter.getListFromNet(requestType);
         xlv_postlist.setXListViewListener(new XListView.IXListViewListener() {
             @Override
             public void onRefresh() {
-                subjectListPresenter.getListFromNet(1);
+                requestType = SubjectListContract.RequestType.REFRESH;
+                subjectListPresenter.getListFromNet(requestType);
             }
 
             @Override
             public void onLoadMore() {
-                currentPage++;
-                subjectListPresenter.getListFromNet(currentPage);
+                requestType = SubjectListContract.RequestType.MORE;
+                subjectListPresenter.getListFromNet(requestType);
             }
         });
-    }
-
-    @Override
-    public void resetPageNum() {
-        currentPage=1;
     }
 }

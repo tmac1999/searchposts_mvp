@@ -6,55 +6,59 @@
               android:orientation="horizontal"
               android:weightSum="5">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="160dp"
+        android:orientation="horizontal">
 
-    <ImageView
-        android:id="@+id/iv_content"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        tools:src="@drawable/icon_about_p"
-        />
+        <ImageView
+            android:id="@+id/iv_content"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            tools:src="@drawable/icon_about_p"
+            />
 
-    <TextView
-        android:id="@+id/tv_content"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="3"
-        tools:text="周永康妻子贾晓晔利用影响力受贿 被判9年
+        <TextView
+            android:id="@+id/tv_content"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            tools:text="周永康妻子贾晓晔利用影响力受贿 被判9年
 ·贾晓晔周永康合影曝光 贾父曾和令完成妻子共事
 ·国防部回应军舰进入日领海：符合航行自由原则
 ·山西黑老大高调出狱被抓后聘律师 家属否认涉黑"
-        />
+            />
 
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/tv_author"
-            android:textColor="#DD6789"
-            android:layout_width="wrap_content"
-            android:textSize="14sp"
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            tools:text="xxxsb"/>
+            android:layout_weight="1"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tv_time"
-            android:textColor="#DDAABB"
-            android:textSize="12sp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:text="2016-06-15"/>
+            <TextView
+                android:id="@+id/tv_author"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#DD6789"
+                android:textSize="14sp"
+                tools:text="xxxsb"/>
 
-        <TextView
-            android:layout_marginTop="10dp"
-            android:id="@+id/tv_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:text="今天好无聊..."/>
+            <TextView
+                android:id="@+id/tv_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#DDAABB"
+                android:textSize="12sp"
+                tools:text="2016-06-15"/>
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                tools:text="今天好无聊..."/>
+        </LinearLayout>
     </LinearLayout>
-
 
 </LinearLayout>

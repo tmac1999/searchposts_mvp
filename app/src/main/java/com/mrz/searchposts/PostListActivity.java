@@ -35,6 +35,7 @@ public class PostListActivity extends SlidingFragmentActivity {
     private TextView tv_empty;
     private TextView tv_empty_list;
     private SharePreferUtil sharePreferUtil;
+    private View sv_postlist;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -49,6 +50,7 @@ public class PostListActivity extends SlidingFragmentActivity {
     private void initViewAndData() {
         et_searchbytitle = (EditText) findViewById(R.id.et_searchbytitle);
         tv_empty = (TextView) findViewById(R.id.tv_empty);
+        sv_postlist = findViewById(R.id.sv_postlist);
         et_searchbytitle.addTextChangedListener(new TextWatcher() {
 
             @Override
@@ -86,28 +88,6 @@ public class PostListActivity extends SlidingFragmentActivity {
                 TextView tv_url = (TextView) vGroup.getChildAt(0);
                 CharSequence url = tv_url.getText();
                 Log.i(TAG, "==position==" + position);
-//				String first = cursor.getString(cursor
-//						.getColumnIndex("_id"));
-//				int firstPostId = Integer.parseInt(first);
-//				if (firstPostId == (position + 1)) {
-//					// 拿到对应行的url，进入新acitivity 并用webview打开url
-//					url = cursor.getString(cursor.getColumnIndex("url"));
-//					Log.i(TAG, "url_postfix:" + url);
-//				}else {
-//					while (cursor.moveToNext()) {
-//
-//						String postId_str = cursor.getString(cursor
-//								.getColumnIndex("_id"));
-//						int postId = Integer.parseInt(postId_str);
-//						if (postId == (position + 1)) {
-//							// 拿到对应行的url，进入新acitivity 并用webview打开url
-//							url = cursor.getString(cursor.getColumnIndex("url"));
-//							Log.i(TAG, "url_postfix:" + url);
-//							break;
-//						}
-//					}
-//				}
-
                 Intent intent = new Intent(PostListActivity.this,
                         PostDetailActivity.class);
                 intent.putExtra("url", url);
@@ -171,24 +151,24 @@ public class PostListActivity extends SlidingFragmentActivity {
     private void refreshContent(String tiebaName) {
         if (tiebaName == null) {
             tv_empty.setVisibility(View.VISIBLE);
-            lv_postlist.setVisibility(View.GONE);
+            sv_postlist.setVisibility(View.GONE);
         } else {
             if (LinkDao.isExistInTiebaList(getApplicationContext(), tiebaName)) {
                 tv_empty.setVisibility(View.GONE);
-                lv_postlist.setVisibility(View.VISIBLE);
+                sv_postlist.setVisibility(View.VISIBLE);
                 Cursor allLinkByName = LinkDao.getAllLinkByName(PostListActivity.this, tiebaName);
                 lv_postlist.setAdapter(new SCursorAdapter(PostListActivity.this, allLinkByName));
                 PostListActivity.this.setTitle(tiebaName);
             } else {
                 tv_empty.setVisibility(View.VISIBLE);
-                lv_postlist.setVisibility(View.GONE);
+                sv_postlist.setVisibility(View.GONE);
             }
 
 
         }
     }
 
-    private void showDeleteDialog(final String paramString) {
+    private void showDeleteDialog(final String tiebaName) {
         AlertDialog.Builder localBuilder = new AlertDialog.Builder(this);
         localBuilder.setTitle("确定将删除此贴吧数据");
         localBuilder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
@@ -198,9 +178,10 @@ public class PostListActivity extends SlidingFragmentActivity {
         });
         localBuilder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface paramDialogInterface, int paramInt) {
-                LinkDao.deleteTableByTiebaName(PostListActivity.this, paramString);
+                LinkDao.deleteTableByTiebaName(PostListActivity.this, tiebaName);
                 Cursor localCursor = LinkDao.getAllTieba(PostListActivity.this);
                 refreshBehindUI(localCursor);
+                refreshContent(tiebaName);
                 PostListActivity.this.lv_listbehind.setAdapter(new PostListActivity.BehindListAdapter(PostListActivity.this, localCursor));
             }
         });

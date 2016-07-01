@@ -17,12 +17,15 @@ public interface SubjectListContract {
 
         void showRequestFailedUI();
 
-        void resetPageNum();
+    }
+
+    enum RequestType {
+        MORE, REFRESH
     }
 
     interface Presenter extends BasePresenter {
 
-        void getListFromNet(int page);
+        void getListFromNet(RequestType type);
 
         void getListFromLocal();
 

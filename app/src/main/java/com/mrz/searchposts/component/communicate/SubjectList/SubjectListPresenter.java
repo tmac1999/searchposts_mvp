@@ -21,23 +21,33 @@ public class SubjectListPresenter implements SubjectListContract.Presenter {
 
     }
 
+    private ArrayList<Post> postList = new ArrayList<Post>();
+    private int currentPage;
 
     @Override
-    public void getListFromNet(final int page) {
+    public void getListFromNet(SubjectListContract.RequestType type) {
 
         subjectListActivity.showLoadingBar();
+        if (type == SubjectListContract.RequestType.REFRESH) {
+            //说明是首次进入或者刷新页面（不是加载更多），此时清空数据
+            postList.clear();
+            currentPage = 1;
+        }else{
+            currentPage++;
+        }
+
         FindCallback findCallback = new FindCallback<AVObject>() {
 
-            private ArrayList<Post> postList = new ArrayList<Post>();
 
             @Override
             public void done(List<AVObject> list, AVException e) {
-                if (page==1){
-                    //说明是首次进入或者刷新页面（不是加载更多），此时清空数据
-                    postList.clear();
-                    subjectListActivity.resetPageNum();
-                }
+
                 if (e == null) {
+                    if (list.size()==0){
+                        //说明没有更多数据
+                        currentPage--;
+                        //TODO 为空应该让activity感知到，同时设置loadmore 的textview 为没有更多。因此最好直接传递list给activity？
+                    }
                     postList = getPostList(list);
                     SubjectListAdapter subjectListAdapter = new SubjectListAdapter(postList, subjectListActivity);
                     subjectListActivity.showList(subjectListAdapter);
@@ -60,7 +70,7 @@ public class SubjectListPresenter implements SubjectListContract.Presenter {
                 return postList;
             }
         };
-        AVService.queryPostByPage(findCallback,page);
+        AVService.queryPostByPage(findCallback, currentPage);
     }
 
     @Override

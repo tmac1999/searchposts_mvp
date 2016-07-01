@@ -85,7 +85,7 @@ public class GraduallyTextView extends EditText {
         text = getText();
 
         scaleX = getTextScaleX() * 10;
-        startY = 88;
+        startY = 50;
         mPaint.setColor(getCurrentTextColor());
         mPaint.setTextSize(getTextSize());
         setMinWidth(getWidth());

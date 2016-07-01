@@ -20,7 +20,7 @@ public class LinkDao {
      * 400亿条tweet  约为10t
      *
      * @param c
-     * @return 开始进入贴吧列表页面显示最新搜索的贴吧表的cursor，不存在返回null(TODO 默认页的问题)
+     * @return 开始进入贴吧列表页面显示最新搜索的贴吧表的cursor，不存在返回null
      * @author mrz
      */
     public static Cursor getAllLink(Context c) {

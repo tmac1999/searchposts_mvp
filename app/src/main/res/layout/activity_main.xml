@@ -6,14 +6,16 @@
 
     <LinearLayout
         android:id="@+id/ll"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
         android:orientation="horizontal">
 
         <Button
+            android:layout_marginLeft="5dp"
             android:id="@+id/btn_search"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:textSize="12sp"
             android:background="@drawable/selector_main_btn"
             android:text="@string/search"/>
 
@@ -21,23 +23,29 @@
             android:layout_marginLeft="5dp"
             android:id="@+id/btn_confirm"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:background="@drawable/selector_main_btn"
+            android:textSize="12sp"
             android:text="@string/confirm"/>
 
         <EditText
             android:id="@+id/et_tiebaname"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="45dp"
             android:layout_weight="1"
             android:hint="请输入贴吧名然后点击确定"
+            android:gravity="center"
             android:textSize="12sp"/>
 
         <TextView
             android:id="@+id/tv_progress"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone"/>
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="45dp"
+            android:text=""
+            android:gravity="center"
+            android:textSize="12sp"
+            tools:visibility="gone"/>
     </LinearLayout>
 
     <WebView

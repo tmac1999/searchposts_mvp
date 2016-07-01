@@ -482,7 +482,7 @@ public class MainActivity extends SlidingFragmentActivity implements
                 case SHOW_TOTALPAGECOUNT:
                     tv_progress.setVisibility(View.VISIBLE);
                     tiebaPageSum = (Integer) msg.obj;
-                    tv_progress.setText("贴吧一共有" + tiebaPageSum + "页，\n建表需" + tiebaPageSum * 3 / 1000.0F + "m空间。");
+                    tv_progress.setText("贴吧一共有" + tiebaPageSum + "页，\n建表需" + tiebaPageSum * 3 / 1000.0F + "m空间，耗时约"+tiebaPageSum/80+"分钟");
                     break;
                 case GET_POSTCOUNTERROR:
                     Toast.makeText(MainActivity.this, "查找贴吧页数出错", Toast.LENGTH_LONG).show();

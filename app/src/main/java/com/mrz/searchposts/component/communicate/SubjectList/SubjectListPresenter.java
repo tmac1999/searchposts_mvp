@@ -46,7 +46,7 @@ public class SubjectListPresenter implements SubjectListContract.Presenter {
                     if (list.size()==0){
                         //说明没有更多数据
                         currentPage--;
-                        //TODO 为空应该让activity感知到，同时设置loadmore 的textview 为没有更多。因此最好直接传递list给activity？
+                        //TODO 为空应该让activity感知到，同时设置loadmore 的textview 为没有更多。因此最好直接传递list给activity？ 待重构
                     }
                     postList = getPostList(list);
                     SubjectListAdapter subjectListAdapter = new SubjectListAdapter(postList, subjectListActivity);

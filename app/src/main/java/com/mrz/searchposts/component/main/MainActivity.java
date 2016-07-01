@@ -30,8 +30,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.avos.avoscloud.AVException;
-import com.avos.avoscloud.SaveCallback;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.jeremyfeinstein.slidingmenu.lib.app.SlidingFragmentActivity;
 import com.mrz.searchposts.PostListActivity;
@@ -279,7 +277,7 @@ public class MainActivity extends SlidingFragmentActivity implements
     private CatLoadingView catLoadingView;
 
     private void showProgressBar() {
-        ToastUtils.showSingletonToast("开始创建数据库...");
+        ToastUtils.showSingletonToast("开始创建数据库...在此期间请勿做任何操作（也做不了^_^）");
         tv_progress.setVisibility(View.VISIBLE);
         tv_progress.setText("页数" + count);
         catLoadingView = new CatLoadingView();
@@ -290,21 +288,17 @@ public class MainActivity extends SlidingFragmentActivity implements
 
     private void startSearchEngine(final String searchPrefix,
                                    final String encodeTiebaName, final String tiebaName) {
-        updateUserData(tiebaName);
+        updateUserData(tiebaName, null);
         startFillInTiebaTable(searchPrefix, tiebaName);
     }
 
-    private void updateUserData(String tiebaName) {
-        SaveCallback saveCallback = new SaveCallback() {
-            @Override
-            public void done(AVException e) {
-                if (e == null) {
-                } else {
-                    e.printStackTrace();
-                }
-            }
-        };
-        AVService.updateUserSearchData(UserSession.getUserID(), UserSession.getLoginUserName(), tiebaName, TimeUtils.getCurrentTime(), tiebaPageSum, saveCallback);
+    private void updateUserData(String tiebaName, String costTime) {
+        if (costTime != null) {
+            //说明是贴吧表创建完成 的数据上传，此时只需更新costTime字段
+            AVService.updateUserSearchData(costTime, AVService.getUserSearchDataObjectId());
+        } else {
+            AVService.insertUserSearchData(UserSession.getUserID(), UserSession.getLoginUserName(), tiebaName, TimeUtils.getCurrentTime(), costTime, tiebaPageSum);
+        }
     }
 
     private void startFillInTiebaTable(final String searchPrefix, final String tiebaName) {
@@ -374,6 +368,10 @@ public class MainActivity extends SlidingFragmentActivity implements
      */
     @SuppressLint("NewApi")
     private void shouldCreateTiebaTable(final String encodeTiebaName, final String tiebaName) {
+        if (tiebaPageSum > 5000 && UserSession.getLoginUserName() == null) {
+            ToastUtils.longToast("这个贴吧太庞大，装进手机会撑爆哦~不怕？那登录了再来试试吧！");
+            return;
+        }
         // String sql =
         // "SELECT * FROM sqlite_master where type = 'table' and name = ?";
         Log.i(TAG, "encodeTiebaName:" + encodeTiebaName);
@@ -498,12 +496,14 @@ public class MainActivity extends SlidingFragmentActivity implements
                     progressPaperCount += (Integer) msg.obj;
                     long l = System.currentTimeMillis();
                     long elapseTime = l - startTime;
-                    long evaluateTotalTIme = elapseTime / progressPaperCount * count;
-                    tv_progress.setText("当前进度：" + progressPaperCount + "/" + count + "预估时间：" + TimeUtils.formatTimeMillis(elapseTime) + "/" + TimeUtils.formatTimeMillis(evaluateTotalTIme));
+                    String evaluateTotalTIme = TimeUtils.formatTimeMillis(elapseTime / progressPaperCount * count);
+                    tv_progress.setText("当前进度：" + progressPaperCount + "/" + count + "预估时间：" + TimeUtils.formatTimeMillis(elapseTime) + "/" + evaluateTotalTIme);
 //                    tv_progress.layout(tv_progress.getLeft(), 0, tv_progress.getRight(), tv_progress.getBottom());
 //                    tv_progress.requestLayout();
-                    if (progressPaperCount == MainActivity.this.count)
-                        MainActivity.this.stopShowProgressBar();
+                    if (progressPaperCount == MainActivity.this.count) {
+                        updateUserData(tiebaName, evaluateTotalTIme);
+                        stopShowProgressBar();
+                    }
                     break;
             }
         }

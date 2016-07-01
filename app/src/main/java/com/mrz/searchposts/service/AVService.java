@@ -102,13 +102,48 @@ public class AVService {
         doing.saveInBackground(saveCallback);
     }
 
-    public static void updateUserSearchData(String userId, String userName, String tiebaName, String createTiebaTableTime, int tiebaPageSum, SaveCallback saveCallback) {
-        AVObject doing = new AVObject("UserSearchData");
+    public static String getUserSearchDataObjectId() {
+        return userSearchDataObjectId;
+    }
+
+    private static String userSearchDataObjectId;
+
+    public static void updateUserSearchData(String costTime, String userSearchDataObjectId) {
+        AVObject avObject = AVObject.createWithoutData("UserSearchData", userSearchDataObjectId);
+        avObject.put("costTime1", costTime);
+        SaveCallback saveCallback = new SaveCallback() {
+            @Override
+            public void done(AVException e) {
+                if (e == null) {
+                } else {
+                    e.printStackTrace();
+                }
+            }
+        };
+        avObject.saveInBackground(saveCallback);
+    }
+
+    public static void insertUserSearchData(String userId, String userName, String tiebaName, String createTiebaTableTime, String costTime, int tiebaPageSum) {
+
+
+        final AVObject doing = new AVObject("UserSearchData");
         doing.put("UserObjectId", userId);
         doing.put("userName", userName);
         doing.put("tiebaName", tiebaName);
         doing.put("createTiebaTableTime", createTiebaTableTime);
+        doing.put("costTime1", "null");//TODO 将列名 都用常量， 以及costTime1 为object格式 如何删除 或者编辑
         doing.put("tiebaPageSum", tiebaPageSum);
+        SaveCallback saveCallback = new SaveCallback() {
+            @Override
+            public void done(AVException e) {
+                if (e == null) {
+                    userSearchDataObjectId = doing.getObjectId();
+                } else {
+                    e.printStackTrace();
+                }
+            }
+
+        };
         doing.saveInBackground(saveCallback);
     }
 
@@ -134,7 +169,7 @@ public class AVService {
         AVQuery query = new AVQuery("Post");
         query.addDescendingOrder("createdAt");
         query.setLimit(10);
-        query.skip((pageCount-1) * 10);
+        query.skip((pageCount - 1) * 10);
         query.findInBackground(findCallback);
 
     }

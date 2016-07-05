@@ -7,8 +7,8 @@ import android.widget.Toast;
  */
 public class ToastUtils {
 
-    static Toast toast;
-    public static void showSingletonToast(String msg){
+    volatile static Toast toast;
+    public  static void showSingletonToast(String msg){
 
         if (toast==null){
             toast = Toast.makeText(ConfigApplication.getInstance(),msg,Toast.LENGTH_SHORT);

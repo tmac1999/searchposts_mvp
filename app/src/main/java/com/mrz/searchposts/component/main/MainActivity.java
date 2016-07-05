@@ -64,7 +64,7 @@ import java.util.concurrent.Executors;
  * webview 与 sildingmenu滑动冲突
  * <p/>
  * version2.0     16.6.15 （1）ui优化，侧边栏进入activity页面时为平移动画（2）增加用户体系（3）增加交流版 ，发帖功能 （4） 增加意见反馈
- * TODO 注册，补全1.1代码。 下拉刷新 ，ui?，建表时间Or进度条
+ * TODO 1.2 建表时提供取消功能（保留已建立数据or删除已建立数据） 增加测试用例  (360,应用宝，百度,小米商店，华为商店)
  *
  * @author mrz
  */
@@ -106,9 +106,15 @@ public class MainActivity extends SlidingFragmentActivity implements
         et_tiebaname = (EditText) findViewById(R.id.et_tiebaname);
         tv_progress = (TextView) findViewById(R.id.tv_progress);
         relativeLayout = (RelativeLayout) findViewById(R.id.rl);
+        relativeLayout.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ToastUtils.longToast("请勿做任何动作");
+                Log.d("TAG","请勿做任何动作");
+            }
+        });
         btn_confirm.setOnClickListener(this);
         btn_search.setOnClickListener(this);
-
         InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
 
         imm.hideSoftInputFromWindow(et_tiebaname.getWindowToken(), 0);
@@ -274,16 +280,14 @@ public class MainActivity extends SlidingFragmentActivity implements
         }
     }
 
-    private CatLoadingView catLoadingView;
+    private CatLoadingView  catLoadingView = new CatLoadingView();
 
     private void showProgressBar() {
         ToastUtils.showSingletonToast("开始创建数据库...在此期间请勿做任何操作（也做不了^_^）");
         tv_progress.setVisibility(View.VISIBLE);
         tv_progress.setText("页数" + count);
-        catLoadingView = new CatLoadingView();
         catLoadingView.setCancelable(false);
         catLoadingView.show(getSupportFragmentManager(), "");
-
     }
 
     private void startSearchEngine(final String searchPrefix,
@@ -352,8 +356,6 @@ public class MainActivity extends SlidingFragmentActivity implements
                         handler.sendMessage(message);
                     }
                 }
-
-                ;
             };
             thread.start();
         }

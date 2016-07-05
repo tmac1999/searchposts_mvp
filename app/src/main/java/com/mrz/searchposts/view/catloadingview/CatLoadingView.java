@@ -1,10 +1,12 @@
 package com.mrz.searchposts.view.catloadingview;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.animation.Animation;
@@ -12,6 +14,7 @@ import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
 
 import com.mrz.searchposts.R;
+import com.mrz.searchposts.utils.ToastUtils;
 
 /**
  * Created by Administrator on 2016/3/30.
@@ -33,7 +36,8 @@ public class CatLoadingView extends DialogFragment {
     GraduallyTextView mGraduallyTextView;
 
 
-    @Override public Dialog onCreateDialog(Bundle savedInstanceState) {
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
         if (mDialog == null) {
             mDialog = new Dialog(getActivity(), R.style.cart_dialog);
             mDialog.setContentView(R.layout.catloading_main);
@@ -109,7 +113,8 @@ public class CatLoadingView extends DialogFragment {
     }
 
 
-    @Override public void onResume() {
+    @Override
+    public void onResume() {
         super.onResume();
         mouse.setAnimation(operatingAnim);
         eye_left.setAnimation(eye_left_Anim);
@@ -120,7 +125,8 @@ public class CatLoadingView extends DialogFragment {
     }
 
 
-    @Override public void onPause() {
+    @Override
+    public void onPause() {
         super.onPause();
 
         operatingAnim.reset();
@@ -136,8 +142,55 @@ public class CatLoadingView extends DialogFragment {
         mGraduallyTextView.stopLoading();
     }
 
+    @Override
+    public void onAttach(Activity activity) {
+        activity.getWindow().getDecorView().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ToastUtils.longToast("请勿做任何动作");
+                Log.d("TAG","请勿做任何动作");
+            }
+        });
+        getActivity().getWindow().getDecorView().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ToastUtils.longToast("请勿做任何动作");
+                Log.d("TAG","请勿做任何动作");
+            }
+        });
 
-    @Override public void onDismiss(DialogInterface dialog) {
+        super.onAttach(activity);
+    }
+
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+
+        super.onViewCreated(view, savedInstanceState);
+        getDialog().getWindow().getDecorView().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ToastUtils.longToast("请勿做任何动作");
+                Log.d("TAG","请勿做任何动作");
+            }
+        });
+
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        getDialog().getWindow().getDecorView().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ToastUtils.longToast("请勿做任何动作");
+                Log.d("TAG","请勿做任何动作");
+            }
+        });
+    }
+
+    @Override
+    public void onDismiss(DialogInterface dialog) {
         super.onDismiss(dialog);
         mDialog = null;
         System.gc();

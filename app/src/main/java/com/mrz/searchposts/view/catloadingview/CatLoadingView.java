@@ -8,12 +8,14 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
 
 import com.mrz.searchposts.R;
+import com.mrz.searchposts.component.main.MainActivity;
 import com.mrz.searchposts.utils.ToastUtils;
 
 /**
@@ -68,7 +70,21 @@ public class CatLoadingView extends DialogFragment {
             eye_right_Anim.setInterpolator(lin);
 
             View view = mDialog.getWindow().getDecorView();
-
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ToastUtils.longToast("请勿做任何动作");
+                    Log.d("TAG","请勿做任何动作");
+                }
+            });
+            View viewById = view.findViewById(R.id.catloading);
+            viewById.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                 MainActivity activity = (MainActivity) getDialog().getOwnerActivity();
+                    activity.showCancelDialog();
+                }
+            });
             mouse = view.findViewById(R.id.mouse);
 
             eye_left = view.findViewById(R.id.eye_left);
@@ -144,18 +160,20 @@ public class CatLoadingView extends DialogFragment {
 
     @Override
     public void onAttach(Activity activity) {
-        activity.getWindow().getDecorView().setOnClickListener(new View.OnClickListener() {
+        activity.getWindow().getDecorView().setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View v) {
-                ToastUtils.longToast("请勿做任何动作");
-                Log.d("TAG","请勿做任何动作");
+            public boolean onTouch(View v, MotionEvent event) {
+                ToastUtils.longToast("请勿做任何动作mainactivity");
+                Log.d("TAG","请勿做任何动作mainactivity");
+                return true;
             }
         });
-        getActivity().getWindow().getDecorView().setOnClickListener(new View.OnClickListener() {
+        getActivity().getWindow().getDecorView().setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View v) {
-                ToastUtils.longToast("请勿做任何动作");
-                Log.d("TAG","请勿做任何动作");
+            public boolean onTouch(View v, MotionEvent event) {
+                ToastUtils.longToast("请勿做任何动作11111111mainactivity");
+                Log.d("TAG","请勿做任何动作1111111111mainactivity");
+                return true;
             }
         });
 
@@ -167,11 +185,12 @@ public class CatLoadingView extends DialogFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
 
         super.onViewCreated(view, savedInstanceState);
-        getDialog().getWindow().getDecorView().setOnClickListener(new View.OnClickListener() {
+        getDialog().getWindow().getDecorView().setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View v) {
-                ToastUtils.longToast("请勿做任何动作");
-                Log.d("TAG","请勿做任何动作");
+            public boolean onTouch(View v, MotionEvent event) {
+                ToastUtils.longToast("dialoggggggggg");
+                Log.d("TAG","dialoggggggggg");
+                return true;
             }
         });
 

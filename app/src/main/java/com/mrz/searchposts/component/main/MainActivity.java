@@ -91,6 +91,7 @@ public class MainActivity extends SlidingFragmentActivity implements
      * 搜索开始时间，用于估算总计耗时
      */
     private long startTime;
+    private ExecutorService pool;
 
     @SuppressLint("NewApi")
     @Override
@@ -105,14 +106,6 @@ public class MainActivity extends SlidingFragmentActivity implements
         btn_search = (Button) findViewById(R.id.btn_search);
         et_tiebaname = (EditText) findViewById(R.id.et_tiebaname);
         tv_progress = (TextView) findViewById(R.id.tv_progress);
-        relativeLayout = (RelativeLayout) findViewById(R.id.rl);
-        relativeLayout.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ToastUtils.longToast("请勿做任何动作");
-                Log.d("TAG","请勿做任何动作");
-            }
-        });
         btn_confirm.setOnClickListener(this);
         btn_search.setOnClickListener(this);
         InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
@@ -310,8 +303,9 @@ public class MainActivity extends SlidingFragmentActivity implements
         progressPaperCount = 0;
         startTime = System.currentTimeMillis();
         if (count > 9) {// 大于10页开启线程池搜索
-            ExecutorService pool = Executors
+            pool = Executors
                     .newFixedThreadPool(THREADCOUNT + 1);
+
             final int baseErrand = count / THREADCOUNT;// e.g. 154页贴吧。
             // baseErrand 为15。
             int currentErrand = 0;
@@ -384,29 +378,7 @@ public class MainActivity extends SlidingFragmentActivity implements
             if (tableName.equals(tiebaName)) {
                 // 弹出提示框，提醒用户
                 //  showDemoDialog();
-                final Builder builder = new AlertDialog.Builder(MainActivity.this);
-                builder.setTitle("提示");
-                builder.setMessage("您已经创建过此贴吧数据表，若确定将删除原表并重新建立新表");
-                builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        builder.create().dismiss();
-
-                    }
-                });
-                builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        ToastUtils.showSingletonToast("原" + tiebaName + "数据表已删除");
-                        LinkDao.deleteTableByTiebaName(getApplicationContext(), tiebaName);
-                        createNewTable(encodeTiebaName, tiebaName);
-                        ToastUtils.showSingletonToast("新" + tiebaName + "数据表已创建");
-                        startSearchEngine(searchURL, encodeTiebaName, tiebaName);
-
-                    }
-                });
-                final AlertDialog alertDialog = builder.create();
-                alertDialog.show();
+                showDuplicateCreateDialog(encodeTiebaName, tiebaName);
             }
             Log.i(TAG, "cursor0" + tableName);
         } else {
@@ -419,6 +391,32 @@ public class MainActivity extends SlidingFragmentActivity implements
             startSearchEngine(searchURL, encodeTiebaName, tiebaName);
         }
 
+    }
+
+    private void showDuplicateCreateDialog(final String encodeTiebaName, final String tiebaName) {
+        final Builder builder = new Builder(MainActivity.this);
+        builder.setTitle("提示");
+        builder.setMessage("您已经创建过此贴吧数据表，若确定将删除原表并重新建立新表");
+        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                builder.create().dismiss();
+
+            }
+        });
+        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                ToastUtils.showSingletonToast("原" + tiebaName + "数据表已删除");
+                LinkDao.deleteTableByTiebaName(getApplicationContext(), tiebaName);
+                createNewTable(encodeTiebaName, tiebaName);
+                ToastUtils.showSingletonToast("新" + tiebaName + "数据表已创建");
+                startSearchEngine(searchURL, encodeTiebaName, tiebaName);
+
+            }
+        });
+        final AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 
     private void createNewTable(String encodeTiebaName, String tiebaName) {
@@ -519,6 +517,29 @@ public class MainActivity extends SlidingFragmentActivity implements
     protected void onDestroy() {
         db.close();
         super.onDestroy();
+    }
+
+    public void showCancelDialog() {
+        final Builder builder = new Builder(this);
+        builder.setTitle("提示");
+        builder.setMessage("正在疯狂加载数据中，确定要取消吗？");
+        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                builder.create().dismiss();
+
+            }
+        });
+        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                catLoadingView.dismiss();
+                pool.shutdownNow();
+                ToastUtils.longToast("任务已取消...");
+            }
+        });
+        final AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 
     class SearchTask implements Runnable {

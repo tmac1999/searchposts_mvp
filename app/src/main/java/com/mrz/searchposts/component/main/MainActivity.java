@@ -533,15 +533,18 @@ public class MainActivity extends SlidingFragmentActivity implements
         builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                catLoadingView.dismiss();
-                pool.shutdownNow();
-                ToastUtils.longToast("任务已取消...");
+                int unicode = 0x1F601;
+                String emojiByUnicode = getEmojiByUnicode(unicode);
+
+                ToastUtils.longToast("其实这个功能还没开发..."+emojiByUnicode+"下个版本，等我！");
             }
         });
         final AlertDialog alertDialog = builder.create();
         alertDialog.show();
     }
-
+    public String getEmojiByUnicode(int unicode){
+        return new String(Character.toChars(unicode));
+    }
     class SearchTask implements Runnable {
         private int currentErrand;
         private int lastErrand;

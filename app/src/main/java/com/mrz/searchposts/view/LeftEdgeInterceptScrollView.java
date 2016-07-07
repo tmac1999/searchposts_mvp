@@ -28,7 +28,7 @@ public class LeftEdgeInterceptScrollView extends HorizontalScrollView {
 
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
-        System.out.println("onTouchEvent=" );
+        System.out.println("onTouchEvent=");
         switch (ev.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 downX = ev.getX();

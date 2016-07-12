@@ -27,26 +27,26 @@
 
                 <EditText
                     android:id="@+id/et_searchbytitle"
+                    style="@style/et_postlist"
                     android:layout_width="140dp"
-                    android:hint="输入标题"
-                    style="@style/et_postlist"/>
+                    android:hint="输入标题"/>
 
                 <EditText
+                    style="@style/et_postlist"
                     android:layout_width="90dp"
                     android:hint="按作者搜索(pendent)"
-                    style="@style/et_postlist"
                     android:singleLine="true"/>
 
                 <Spinner
-                    android:layout_width="@dimen/posttime"
                     android:id="@+id/spinner_time"
                     style="@style/et_postlist"
+                    android:layout_width="@dimen/posttime"
                     android:singleLine="true"/>
 
                 <EditText
+                    style="@style/et_postlist"
                     android:layout_width="@dimen/replycount"
                     android:hint="回帖数"
-                    style="@style/et_postlist"
                     android:singleLine="true"/>
             </LinearLayout>
 

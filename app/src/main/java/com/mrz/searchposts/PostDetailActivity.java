@@ -7,6 +7,7 @@ import android.webkit.WebViewClient;
 import com.mrz.searchposts.component.BaseThemeActivity;
 
 public class PostDetailActivity extends BaseThemeActivity {
+    public static String BASE_TIEBA_URL = "http://tieba.baidu.com";
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

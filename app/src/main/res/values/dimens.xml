@@ -6,6 +6,6 @@
     <dimen name="title">230dp</dimen>
     <dimen name="author">80dp</dimen>
     <dimen name="replycount">60dp</dimen>
-    <dimen name="posttime">60dp</dimen>
+    <dimen name="posttime">90dp</dimen>
 
 </resources>

@@ -23,6 +23,7 @@
         <item name="android:layout_gravity">center_vertical</item>
         <item name="android:orientation">horizontal</item>
     </style>
+
     <style name="cart_dialog"
            parent="@android:style/Theme.Holo.Light.Dialog">
         <item name="android:windowFrame">@null</item>
@@ -38,7 +39,7 @@
     <style name="et_postlist">
         <item name="android:gravity">center</item>
         <item name="android:textSize">12sp</item>
-        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_height">50dp</item>
     </style>
 
     <style name="tv_mainbehind">

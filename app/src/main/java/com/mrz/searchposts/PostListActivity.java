@@ -1,12 +1,15 @@
 package com.mrz.searchposts;
 
 import android.app.AlertDialog;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
@@ -25,6 +28,7 @@ import com.jeremyfeinstein.slidingmenu.lib.app.SlidingFragmentActivity;
 import com.mrz.searchposts.data.dao.LinkDao;
 import com.mrz.searchposts.utils.CommonUtils;
 import com.mrz.searchposts.utils.SharePreferUtil;
+import com.mrz.searchposts.utils.ToastUtils;
 
 public class PostListActivity extends SlidingFragmentActivity {
     protected static final String TAG = "PostListActivity";
@@ -58,6 +62,20 @@ public class PostListActivity extends SlidingFragmentActivity {
         lv_postlist = (ListView) findViewById(R.id.lv_postlist);
         refreshContent(sharePreferUtil.getLastBrowseTiebaName());
         lv_postlist.setOnItemClickListener(getOnItemClickListener());
+        lv_postlist.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                ViewGroup vGroup = (ViewGroup) view;
+                TextView tv_url = (TextView) vGroup.getChildAt(0);
+                CharSequence url = tv_url.getText();
+                ClipboardManager myClipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+                ClipData myClip;
+                myClip = ClipData.newPlainText("text", PostDetailActivity.BASE_TIEBA_URL+url);
+                myClipboard.setPrimaryClip(myClip);
+                ToastUtils.longToast("链接已复制到剪贴板");
+                return true;
+            }
+        });
         Spinner spinner = (Spinner) findViewById(R.id.spinner_time);
         items = getResources().getStringArray(R.array.spinnername);
         spinner.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, items));
@@ -66,6 +84,9 @@ public class PostListActivity extends SlidingFragmentActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String order = parent.getItemAtPosition(position).toString();
+                if (TextUtils.isEmpty(editable)) {
+                    return;
+                }
                 if (order.equals(items[0])) {//升序
                     cursor = LinkDao.queryByTitleFromSpecifiedTiebaAscByTime(PostListActivity.this, editable, getTitle().toString());
                     lv_postlist.setAdapter(new SCursorAdapter(

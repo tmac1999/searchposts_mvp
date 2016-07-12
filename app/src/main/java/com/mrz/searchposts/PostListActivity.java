@@ -13,9 +13,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.CursorAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
@@ -36,6 +38,7 @@ public class PostListActivity extends SlidingFragmentActivity {
     private TextView tv_empty_list;
     private SharePreferUtil sharePreferUtil;
     private View sv_postlist;
+    private String[] items;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -51,7 +54,59 @@ public class PostListActivity extends SlidingFragmentActivity {
         et_searchbytitle = (EditText) findViewById(R.id.et_searchbytitle);
         tv_empty = (TextView) findViewById(R.id.tv_empty);
         sv_postlist = findViewById(R.id.sv_postlist);
-        et_searchbytitle.addTextChangedListener(new TextWatcher() {
+        et_searchbytitle.addTextChangedListener(getWatcher());
+        lv_postlist = (ListView) findViewById(R.id.lv_postlist);
+        refreshContent(sharePreferUtil.getLastBrowseTiebaName());
+        lv_postlist.setOnItemClickListener(getOnItemClickListener());
+        Spinner spinner = (Spinner) findViewById(R.id.spinner_time);
+        items = getResources().getStringArray(R.array.spinnername);
+        spinner.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_dropdown_item_1line, items));
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String order = parent.getItemAtPosition(position).toString();
+                if (order.equals(items[0])) {//升序
+                    cursor = LinkDao.queryByTitleFromSpecifiedTiebaAscByTime(PostListActivity.this, editable, getTitle().toString());
+                    lv_postlist.setAdapter(new SCursorAdapter(
+                            PostListActivity.this, cursor));
+                } else {
+                    //降序
+                    cursor = LinkDao.queryByTitleFromSpecifiedTiebaDescByTime(PostListActivity.this, editable, getTitle().toString());
+                    lv_postlist.setAdapter(new SCursorAdapter(
+                            PostListActivity.this, cursor));
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+    }
+
+    private OnItemClickListener getOnItemClickListener() {
+        return new OnItemClickListener() {
+            /**
+             * 每次 都根据
+             */
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+                ViewGroup vGroup = (ViewGroup) view;
+                TextView tv_url = (TextView) vGroup.getChildAt(0);
+                CharSequence url = tv_url.getText();
+                Log.i(TAG, "==position==" + position);
+                Intent intent = new Intent(PostListActivity.this,
+                        PostDetailActivity.class);
+                intent.putExtra("url", url);
+                startActivity(intent);
+            }
+        };
+    }
+
+    private TextWatcher getWatcher() {
+        return new TextWatcher() {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before,
@@ -74,26 +129,7 @@ public class PostListActivity extends SlidingFragmentActivity {
                         PostListActivity.this, cursor));
                 // lv_postlist.requestLayout();
             }
-        });
-        lv_postlist = (ListView) findViewById(R.id.lv_postlist);
-        refreshContent(sharePreferUtil.getLastBrowseTiebaName());
-        lv_postlist.setOnItemClickListener(new OnItemClickListener() {
-            /**
-             * 每次 都根据
-             */
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
-                ViewGroup vGroup = (ViewGroup) view;
-                TextView tv_url = (TextView) vGroup.getChildAt(0);
-                CharSequence url = tv_url.getText();
-                Log.i(TAG, "==position==" + position);
-                Intent intent = new Intent(PostListActivity.this,
-                        PostDetailActivity.class);
-                intent.putExtra("url", url);
-                startActivity(intent);
-            }
-        });
+        };
     }
 
     private void initSlidingMenu() {
@@ -139,7 +175,7 @@ public class PostListActivity extends SlidingFragmentActivity {
     }
 
     private void refreshBehindUI(Cursor allTieba) {
-        if (allTieba.getCount() <1) {
+        if (allTieba.getCount() < 1) {
             tv_empty_list.setVisibility(View.VISIBLE);
             lv_listbehind.setVisibility(View.GONE);
         } else {

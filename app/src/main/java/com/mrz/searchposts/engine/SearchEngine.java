@@ -1,7 +1,7 @@
 package com.mrz.searchposts.engine;
 
-import java.io.IOException;
-import java.util.ArrayList;
+import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -9,10 +9,8 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-import com.mrz.searchposts.data.db.DBHelper;
-
-import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
+import java.io.IOException;
+import java.util.ArrayList;
 
 public class SearchEngine {
 	private static final String TAG = "SearchEngine";
@@ -162,7 +160,6 @@ public class SearchEngine {
 			}
 
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 

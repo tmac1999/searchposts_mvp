@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 
 import com.mrz.searchposts.data.db.DBHelper;
+import com.mrz.searchposts.data.db.LinkDBContracts;
 
 public class LinkDao {
     /**
@@ -54,6 +55,20 @@ public class LinkDao {
         DBHelper helper = new DBHelper(c);
         SQLiteDatabase db = helper.getReadableDatabase();
         String sql = "select * from " + TiebaName + " where title like ?";
+        Cursor cursor = db.rawQuery(sql, new String[]{"%" + title + "%"});
+        return cursor;
+    }
+    public static Cursor queryByTitleFromSpecifiedTiebaAscByTime(Context c, String title, String TiebaName) {
+        DBHelper helper = new DBHelper(c);
+        SQLiteDatabase db = helper.getReadableDatabase();
+        String sql = "select * from " + TiebaName + " where title like ? order by "+ LinkDBContracts.Link.COLUMN_NAME_POSTTIME +" asc";
+        Cursor cursor = db.rawQuery(sql, new String[]{"%" + title + "%"});
+        return cursor;
+    }
+    public static Cursor queryByTitleFromSpecifiedTiebaDescByTime(Context c, String title, String TiebaName) {
+        DBHelper helper = new DBHelper(c);
+        SQLiteDatabase db = helper.getReadableDatabase();
+        String sql = "select * from " + TiebaName + " where title like ? order by "+ LinkDBContracts.Link.COLUMN_NAME_POSTTIME +" desc";
         Cursor cursor = db.rawQuery(sql, new String[]{"%" + title + "%"});
         return cursor;
     }

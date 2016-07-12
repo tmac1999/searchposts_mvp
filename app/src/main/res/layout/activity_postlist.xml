@@ -37,9 +37,9 @@
                     style="@style/et_postlist"
                     android:singleLine="true"/>
 
-                <EditText
+                <Spinner
                     android:layout_width="@dimen/posttime"
-                    android:hint="发布日期"
+                    android:id="@+id/spinner_time"
                     style="@style/et_postlist"
                     android:singleLine="true"/>
 

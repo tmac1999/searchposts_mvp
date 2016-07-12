@@ -25,9 +25,10 @@ public class LeftEdgeInterceptScrollView extends HorizontalScrollView {
 
     float downX = 0;
 
-    @Override
-    public boolean onInterceptTouchEvent(MotionEvent ev) {
 
+    @Override
+    public boolean onTouchEvent(MotionEvent ev) {
+        System.out.println("onTouchEvent=");
         switch (ev.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 downX = ev.getX();
@@ -38,12 +39,16 @@ public class LeftEdgeInterceptScrollView extends HorizontalScrollView {
                 int width = getWidth();
                 int scrollViewMeasuredHeight = getChildAt(0).getMeasuredWidth();
                 Log.d("EVENT", "downX" + downX + "moveX" + moveX + "downX - moveX" + (downX - moveX));
-                //if (scrollX == 0) {//在最左端
+                if (scrollX == 0) {//在在最左端
+
                     if (downX - moveX < 0) {//右滑
-                        return false;
+                        System.out.println("在在最左端 右滑scrollX()=" + scrollX);
+                        //requestDisallowInterceptTouchEvent(false) 需要拦截我的子控件  （父控件调用）
+                        //getParent().requestDisallowInterceptTouchEvent(false) 我的父控件 请拦截我。
+                        getParent().requestDisallowInterceptTouchEvent(false);
                     }
-                    System.out.println("滑动到了顶端 view.getScrollY()=" + scrollX);
-               // }
+//                    System.out.println("滑动到了顶端 view.getScrollY()=" + scrollX);
+                }
                 if ((scrollX + width) == scrollViewMeasuredHeight) {
                     System.out.println("滑动到了底部 scrollY=" + scrollX);
                     System.out.println("滑动到了底部 height=" + width);
@@ -51,17 +56,8 @@ public class LeftEdgeInterceptScrollView extends HorizontalScrollView {
                 }
                 break;
         }
-        return super.onInterceptTouchEvent(ev);
-    }
 
-    @Override
-    public boolean onTouchEvent(MotionEvent ev) {
 
-//        int left = getLeft();
-//        int childleft = getChildAt(0).getLeft();
-//        float x = getX();
-//        float x1 = getChildAt(0).getX();
-//        Log.d("SVVVVVVVVVVVVV", "left" + left + "childleft" + childleft + "x" + x + "childx" + x1);
         return super.onTouchEvent(ev);
     }
 }

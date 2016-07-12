@@ -6,6 +6,7 @@ import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.LogInCallback;
 import com.mrz.searchposts.data.SPRepository;
+import com.mrz.searchposts.utils.ToastUtils;
 
 /**
  * Created by zhengpeng on 2016/5/27.
@@ -75,7 +76,7 @@ public class LoginPresenter implements LoginContract.Presenter {
 
     @Override
     public void openForgetPwdUI() {
-
+        ToastUtils.showSingletonToast("该功能下个版本将推出...");
     }
 
     @Override

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="com.mrz.searchposts"
+<manifest package="com.mrz.searchenginefortieba"
           xmlns:android="http://schemas.android.com/apk/res/android"
           android:versionCode="1"
           android:versionName="1.0">
@@ -11,13 +11,13 @@
     <uses-permission android:name="com.android.provider.permission.READ_HISTORY_BOOKMARKS"/>
 
     <application
-        android:name=".utils.ConfigApplication"
+        android:name="com.mrz.searchenginefortieba.utils.ConfigApplication"
         android:allowBackup="true"
         android:icon="@drawable/lanuncher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".component.main.MainActivity"
+            android:name="com.mrz.searchenginefortieba.component.main.MainActivity"
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -25,19 +25,19 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".PostListActivity"/>
-        <activity android:name=".PostDetailActivity"/>
-        <activity android:name=".component.login.LoginActivity">
+        <activity android:name="com.mrz.searchenginefortieba.PostListActivity"/>
+        <activity android:name="com.mrz.searchenginefortieba.PostDetailActivity"/>
+        <activity android:name="com.mrz.searchenginefortieba.component.login.LoginActivity">
         </activity>
-        <activity android:name=".component.feedback.FeedBackActivity">
+        <activity android:name="com.mrz.searchenginefortieba.component.feedback.FeedBackActivity">
         </activity>
-        <activity android:name=".component.communicate.SendPost.SendPostActivity">
+        <activity android:name="com.mrz.searchenginefortieba.component.communicate.SendPost.SendPostActivity">
         </activity>
-        <activity android:name=".component.communicate.SubjectList.SubjectListActivity">
+        <activity android:name="com.mrz.searchenginefortieba.component.communicate.SubjectList.SubjectListActivity">
         </activity>
-        <activity android:name=".component.register.RegisterActivity">
+        <activity android:name="com.mrz.searchenginefortieba.component.register.RegisterActivity">
         </activity>
-        <activity android:name=".component.me.MeActivity">
+        <activity android:name="com.mrz.searchenginefortieba.component.me.MeActivity">
         </activity>
     </application>
 

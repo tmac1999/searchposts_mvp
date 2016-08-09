@@ -10,7 +10,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".component.communicate.SubjectList.SubjectListActivity">
 
-    <com.mrz.searchposts.view.XListView
+    <com.mrz.searchenginefortieba.view.XListView
         tools:listitem="@layout/item_subject"
         android:id="@+id/xlv_postlist"
         android:layout_width="match_parent"

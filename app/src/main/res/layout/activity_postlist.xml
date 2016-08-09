@@ -5,7 +5,7 @@
               android:layout_height="match_parent"
               android:orientation="vertical">
 
-    <com.mrz.searchposts.view.LeftEdgeInterceptScrollView
+    <com.mrz.searchenginefortieba.view.LeftEdgeInterceptScrollView
         android:id="@+id/sv_postlist"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -57,7 +57,7 @@
                 tools:visibility="gone">
             </ListView>
         </LinearLayout>
-    </com.mrz.searchposts.view.LeftEdgeInterceptScrollView>
+    </com.mrz.searchenginefortieba.view.LeftEdgeInterceptScrollView>
 
     <TextView
         android:id="@+id/tv_empty"

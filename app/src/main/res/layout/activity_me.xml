@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.mrz.searchposts.component.me.MeActivity">
+    tools:context="com.mrz.searchenginefortieba.component.me.MeActivity">
 
     <ImageView
         android:layout_width="60dp"

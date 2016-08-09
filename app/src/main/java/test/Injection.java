@@ -2,7 +2,7 @@ package test;
 
 import android.content.Context;
 
-import com.mrz.searchposts.data.SPRepository;
+import com.mrz.searchenginefortieba.data.SPRepository;
 
 /**
  * Created by zhengpeng on 2016/5/27.

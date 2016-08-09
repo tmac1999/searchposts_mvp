@@ -32,7 +32,7 @@
             android:layout_marginTop="12.5dp"
             android:src="@drawable/eyes"/>
 
-        <com.mrz.searchposts.view.catloadingview.EyelidView
+        <com.mrz.searchenginefortieba.view.catloadingview.EyelidView
             android:id="@+id/eyelid_left"
             android:layout_width="24dp"
             android:layout_height="15dp"
@@ -48,7 +48,7 @@
             android:layout_marginTop="12.5dp"
             android:src="@drawable/eyes"/>
 
-        <com.mrz.searchposts.view.catloadingview.EyelidView
+        <com.mrz.searchenginefortieba.view.catloadingview.EyelidView
             android:id="@+id/eyelid_right"
             android:layout_width="24dp"
             android:layout_height="15dp"
@@ -57,7 +57,7 @@
             android:src="@drawable/eyes"/>
     </RelativeLayout>
 
-    <com.mrz.searchposts.view.catloadingview.GraduallyTextView
+    <com.mrz.searchenginefortieba.view.catloadingview.GraduallyTextView
         android:id="@+id/graduallyTextView"
         android:layout_width="110dp"
         android:layout_height="wrap_content"

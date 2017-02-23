@@ -14,6 +14,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
@@ -29,6 +30,7 @@ import com.mrz.searchenginefortieba.data.dao.LinkDao;
 import com.mrz.searchenginefortieba.utils.CommonUtils;
 import com.mrz.searchenginefortieba.utils.SharePreferUtil;
 import com.mrz.searchenginefortieba.utils.ToastUtils;
+import com.mrz.searchenginefortieba.view.XListView;
 
 public class PostListActivity extends SlidingFragmentActivity {
     protected static final String TAG = "PostListActivity";
@@ -43,6 +45,7 @@ public class PostListActivity extends SlidingFragmentActivity {
     private SharePreferUtil sharePreferUtil;
     private View sv_postlist;
     private String[] items;
+    private String title;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -52,6 +55,7 @@ public class PostListActivity extends SlidingFragmentActivity {
         setContentView(R.layout.activity_postlist);
         initSlidingMenu();
         initViewAndData();
+
     }
 
     private void initViewAndData() {
@@ -70,10 +74,27 @@ public class PostListActivity extends SlidingFragmentActivity {
                 CharSequence url = tv_url.getText();
                 ClipboardManager myClipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
                 ClipData myClip;
-                myClip = ClipData.newPlainText("text", PostDetailActivity.BASE_TIEBA_URL+url);
+                myClip = ClipData.newPlainText("text", PostDetailActivity.BASE_TIEBA_URL + url);
                 myClipboard.setPrimaryClip(myClip);
                 ToastUtils.longToast("链接已复制到剪贴板");
                 return true;
+            }
+        });
+        lv_postlist.setOnScrollListener(new XListView.OnXScrollListener() {
+            @Override
+            public void onXScrolling(View view) {
+
+            }
+
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+
+                setTitle(title + ":" + firstVisibleItem + "+" + visibleItemCount);
             }
         });
         Spinner spinner = (Spinner) findViewById(R.id.spinner_time);
@@ -215,7 +236,8 @@ public class PostListActivity extends SlidingFragmentActivity {
                 sv_postlist.setVisibility(View.VISIBLE);
                 Cursor allLinkByName = LinkDao.getAllLinkByName(PostListActivity.this, tiebaName);
                 lv_postlist.setAdapter(new SCursorAdapter(PostListActivity.this, allLinkByName));
-                PostListActivity.this.setTitle(tiebaName);
+                title = tiebaName + "(" + allLinkByName.getCount() + ")";
+                PostListActivity.this.setTitle(title);
             } else {
                 tv_empty.setVisibility(View.VISIBLE);
                 sv_postlist.setVisibility(View.GONE);
@@ -249,7 +271,6 @@ public class PostListActivity extends SlidingFragmentActivity {
 
         public BehindListAdapter(Context context, Cursor c) {
             super(context, c);
-            // TODO Auto-generated constructor stub
         }
 
         @Override

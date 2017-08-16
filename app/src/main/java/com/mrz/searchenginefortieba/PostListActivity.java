@@ -36,7 +36,7 @@ public class PostListActivity extends SlidingFragmentActivity {
     private ListView lv_postlist;
     private EditText et_searchbytitle;
     private Cursor cursor;
-    private String editable;
+    private String editable = "";
     private ListView lv_listbehind;
 
     private TextView tv_empty;

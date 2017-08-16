@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
@@ -105,16 +104,16 @@ public class PostListActivity extends SlidingFragmentActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String order = parent.getItemAtPosition(position).toString();
-                if (TextUtils.isEmpty(editable)) {
-                    return;
-                }
+//                if (TextUtils.isEmpty(editable)) {
+//                    return;
+//                }
                 if (order.equals(items[0])) {//升序
-                    cursor = LinkDao.queryByTitleFromSpecifiedTiebaAscByTime(PostListActivity.this, editable, getTitle().toString());
+                    cursor = LinkDao.queryByTitleFromSpecifiedTiebaAscByTime(PostListActivity.this, editable, tiebaName);
                     lv_postlist.setAdapter(new SCursorAdapter(
                             PostListActivity.this, cursor));
                 } else {
                     //降序
-                    cursor = LinkDao.queryByTitleFromSpecifiedTiebaDescByTime(PostListActivity.this, editable, getTitle().toString());
+                    cursor = LinkDao.queryByTitleFromSpecifiedTiebaDescByTime(PostListActivity.this, editable, tiebaName);
                     lv_postlist.setAdapter(new SCursorAdapter(
                             PostListActivity.this, cursor));
                 }
@@ -166,7 +165,7 @@ public class PostListActivity extends SlidingFragmentActivity {
             public void afterTextChanged(Editable s) {
                 editable = s.toString();
                 Log.i(TAG, "afterTextChanged" + editable);
-                cursor = LinkDao.queryByTitleFromSpecifiedTieba(PostListActivity.this, editable, getTitle().toString());
+                cursor = LinkDao.queryByTitleFromSpecifiedTieba(PostListActivity.this, editable, tiebaName);
                 lv_postlist.setAdapter(new SCursorAdapter(
                         PostListActivity.this, cursor));
                 // lv_postlist.requestLayout();
@@ -226,6 +225,8 @@ public class PostListActivity extends SlidingFragmentActivity {
         }
     }
 
+    String tiebaName;
+
     private void refreshContent(String tiebaName) {
         if (tiebaName == null) {
             tv_empty.setVisibility(View.VISIBLE);
@@ -237,6 +238,7 @@ public class PostListActivity extends SlidingFragmentActivity {
                 Cursor allLinkByName = LinkDao.getAllLinkByName(PostListActivity.this, tiebaName);
                 lv_postlist.setAdapter(new SCursorAdapter(PostListActivity.this, allLinkByName));
                 title = tiebaName + "(" + allLinkByName.getCount() + ")";
+                this.tiebaName = tiebaName;
                 PostListActivity.this.setTitle(title);
             } else {
                 tv_empty.setVisibility(View.VISIBLE);

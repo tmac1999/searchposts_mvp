@@ -564,7 +564,7 @@ public class MainActivity extends SlidingFragmentActivity implements
                 SearchEngine.articleByName(index, searchURL, db, tiebaName);
                 Log.i(TAG, "Thread==" + Thread.currentThread().getName()
                         + "=============Search One Time ==================" + i);
-                message = new Message();
+                message = Message.obtain();
                 message.obj = 1;
                 handler.sendMessage(message);
             }
